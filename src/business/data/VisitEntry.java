@@ -1,5 +1,5 @@
 package business.data;
 
-public class VistEntry {
+public class VisitEntry {
 
 }
