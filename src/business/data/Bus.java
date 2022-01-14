@@ -1,5 +1,5 @@
 package business.data;
 
-public class bus {
+public class Bus {
 
 }
