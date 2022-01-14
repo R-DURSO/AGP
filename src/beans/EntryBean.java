@@ -20,7 +20,7 @@ public class EntryBean {
 	 * Proxy encapsulated object. All get/set of parameters work on this proxy object.
 	 */
 	private SimulationEntry entry = new SimulationEntry();
-
+    private String[] selectedOptions;
 	private Simulation simulation = (Simulation) SpringIoC.getBean("simulation");;
 
 	public EntryBean() {
@@ -53,9 +53,7 @@ public class EntryBean {
 		return entry.getSimulationDuration();
 	}
 
-	public void setSimulationDuration(int simulationDuration) {
-		entry.setSimulationDuration(simulationDuration);
-	}
+
 
 	public int getCashierCount() {
 		return entry.getCashierCount();
@@ -105,4 +103,19 @@ public class EntryBean {
 		entry.setClientPatienceTime(clientPatienceTime);
 	}
 
+	// vouvelle méthodes
+    public void setSelectedOptions(String[] selectedOptions) {
+        this.selectedOptions = selectedOptions;
+    }
+    public void selectedOptionsChanged() {
+        String message = "selectedOptions changed to: ";
+        if (selectedOptions != null) {
+            for (int i = 0; i < selectedOptions.length; i++) {
+                if (i > 0) {
+                    message += ", ";
+                }
+                message += selectedOptions[i];
+            }
+        }
+    }
 }

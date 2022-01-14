@@ -3,6 +3,9 @@ package business.client;
 /**
  * This class encapsulates simulation entry parameters.
  */
+/*
+ * modifier les constante qui seront utiliser 
+ */
 public class SimulationEntry {
     private int simulationDuration;
     private int cashierCount;

@@ -5,18 +5,23 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-	<title>Bank simulation</title>
+	<title>Agence de voyage pour l'Ile de la Réunion</title>
 </h:head>
 <h:body>
 	<p>
-		<strong>Welcome to bank simulation !</strong>
+		<strong>Bienvenue dans  !</strong>
 	</p>
 
 	<h2>Please enter values for simulation parameters</h2>
 	<fieldset>
 		<h:form>
-			Simulation duration : <h:inputText value="#{entryBean.simulationDuration}" /> <br />
-			Cashier count : <h:inputText value="#{entryBean.cashierCount}" /> <br />
+<!--        <h5 style="margin-top:0px">choix de la qualitée d'hébergement </h5>
+        <p:selectManyCheckbox id="basic" value="#{checkboxView.selectedOptions}">
+            <f:selectItem itemLabel="Option 1" itemValue=luxe/>
+            <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
+            <f:selectItem itemLabel="Option 3" itemValue="simple "/>
+        </p:selectManyCheckbox>-->
+        	duration  time : <h:inputText value="#{entryBean.simulationDuration}" /> <br />
 			Min service time : <h:inputText value="#{entryBean.minServiceTime}" /> <br />
 			Max service time : <h:inputText value="#{entryBean.maxServiceTime}" /> <br />
 			Client arrival interval : <h:inputText value="#{entryBean.clientArrivalInterval}" /> <br />
@@ -28,3 +33,11 @@
 	</fieldset>
 </h:body>
 </html>
+<!-- 
+- choisir le critère
+- durée ( peux être ) 
+- le type de séjour 
+-budget
+
+liste des sites 
+-->
