@@ -1,5 +1,7 @@
 package business.data;
 
-public class Boat {
+public class Boat extends Transport{
+
+
 
 }

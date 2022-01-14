@@ -1,5 +1,7 @@
 package business.data;
 
-public class Walk {
+public class Walk extends Transport{
+
+	
 
 }
