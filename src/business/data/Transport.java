@@ -5,6 +5,13 @@ public abstract class Transport {
 	private int price;
 	private int comfortLevel;
 	
+	public Transport() {
+		
+	}
+	public Transport(int price, int comfortLevel) {
+		this.price=price;
+		this.comfortLevel=comfortLevel;
+	}
 	
 	public int getPrice() {
 		return price;
