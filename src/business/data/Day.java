@@ -3,6 +3,9 @@ package business.data;
 import java.util.List;
 
 public class Day {
+	
+	private int price;
+	private int comfortLevel;
 	private boolean restDay;
 	private List<Excursion> excursionList;
 
@@ -16,6 +19,48 @@ public class Day {
 		this.excursionList=excursionList;
 	}
 	
+	public void updatePrice() {
+		int sum =0;
+		for (Excursion excursion : excursionList) {
+			excursion.updatePrice();
+			sum+=excursion.getPrice();
+		}
+		this.price=sum;
+	}
+	
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public void updateComfortLevel() {
+		int sum=0;
+		for(Excursion excursion : excursionList) {
+			excursion.updateComfortLevel();
+			sum += excursion.getComfortLevel();
+		}
+		this.comfortLevel=sum;
+	}
+	
+	public int getComfortLevel() {
+		return comfortLevel;
+	}
+
+	public void setComfortLevel(int comfortLevel) {
+		this.comfortLevel = comfortLevel;
+	}
+
+	public void setRestDay(boolean restDay) {
+		this.restDay = restDay;
+	}
+
+	public void setExcursionList(List<Excursion> excursionList) {
+		this.excursionList = excursionList;
+	}
+
 	public List<Excursion> getExcursionList() {
 		return excursionList;
 	}
