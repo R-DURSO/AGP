@@ -6,6 +6,12 @@ public class Site {
 	//ajouter la localisation geo ?
 	
 	public Site() {
+		this.name=null;
+		this.description=null;
+	}
+	
+	public Site(String name) {
+		this.name=name;
 		this.description=null;
 	}
 
