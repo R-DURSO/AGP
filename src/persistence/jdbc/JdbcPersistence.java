@@ -80,15 +80,14 @@ public class JdbcPersistence  {
 
 	    // 2. Creation de l'index
         //Directory index = new RAMDirectory();  //création index en mémoire
-	    Path indexpath = FileSystems.getDefault().getPath("/other/index"); //localisation index
+	    Path indexpath = FileSystems.getDefault().getPath("src\\persistence\\jdbc\\site\\index"); //localisation index
 	    Directory index = FSDirectory.open(indexpath);  //création index sur disque
-	    
 	    IndexWriterConfig config = new IndexWriterConfig(analyseur);
 	    IndexWriter w = new IndexWriter(index, config);
 	    
 	    // 3. Indexation des documents
 	    //    Ici on indexe seulement un fichier
-	    File f = new File("/tmp/Cascade_Jacqueline.txt");
+	    File f = new File("src\\persistence\\jdbc\\site\\Cascade_Jacqueline.txt");
    		Document doc = new Document();
    		doc.add(new Field("nom", f.getName(), TextField.TYPE_STORED));
    		doc.add(new Field("contenu", new FileReader(f), TextField.TYPE_NOT_STORED));

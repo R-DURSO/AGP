@@ -8,7 +8,6 @@ import javax.faces.bean.RequestScoped;
 import org.primefaces.model.chart.PieChartModel;
 
 
-import dao.StatisticPersistence;
 
 /**
  * 
@@ -21,7 +20,7 @@ public class ResultBean {
 
 	private PieChartModel pieModel1;
 
-	@ManagedProperty(value = "#{entryBean}")
+	@ManagedProperty(value = "#{SelectBean}")
 	private SelectBean entryBean;
 	
 	public ResultBean() {

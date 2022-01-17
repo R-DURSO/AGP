@@ -1,7 +1,7 @@
 package core;
 
 
-import business.client.JourneyEntry;
+import business.data.JourneyEntry;
 import business.spring.SpringIoC;
 
 
@@ -45,12 +45,6 @@ public class SejourUtility {
 
 
 	
-	public static int generateRandomServiceTime(JourneyEntry entry) {
-		int minServiceTime = entry.getMinServiceTime();
-		int maxServiceTime = entry.getMaxServiceTime();
-		int randomServiceTime = SejourUtility.getRandomServiceTime(minServiceTime, maxServiceTime);
-		return randomServiceTime;
-	}
 
 	public static boolean newClientArrival(int clientArrivalInterval, int simIter) {
 		return simIter % clientArrivalInterval == 0;

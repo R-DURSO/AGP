@@ -3,7 +3,7 @@ package beans;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import business.client.JourneyEntry;
+import business.data.JourneyEntry;
 import business.spring.SpringIoC;
 
 /**
@@ -23,7 +23,10 @@ public class SelectBean {
 
 	public SelectBean() {
 	}
-
+	public String findSejour() {
+		System.out.println("test");
+		return "result";
+	}
 
 
 	public JourneyEntry getEntry() {
@@ -34,60 +37,7 @@ public class SelectBean {
 		this.entry = entry;
 	}
 
-	public int getSimulationDuration() {
-		return entry.getSimulationDuration();
-	}
-
-
-
-	public int getCashierCount() {
-		return entry.getCashierCount();
-	}
-
-	public void setCashierCount(int cashierCount) {
-		entry.setCashierCount(cashierCount);
-	}
-
-	public int getMinServiceTime() {
-		return entry.getMinServiceTime();
-	}
-
-	public void setMinServiceTime(int minServiceTime) {
-		entry.setMinServiceTime(minServiceTime);
-	}
-
-	public int getMaxServiceTime() {
-		return entry.getMaxServiceTime();
-	}
-
-	public void setMaxServiceTime(int maxServiceTime) {
-		entry.setMaxServiceTime(maxServiceTime);
-	}
-
-	public int getClientArrivalInterval() {
-		return entry.getClientArrivalInterval();
-	}
-
-	public void setClientArrivalInterval(int clientArrivalInterval) {
-		entry.setClientArrivalInterval(clientArrivalInterval);
-	}
-
-	public double getPriorityClientRate() {
-		return entry.getPriorityClientRate();
-	}
-
-	public void setPriorityClientRate(double priorityClientRate) {
-		entry.setPriorityClientRate(priorityClientRate);
-	}
-
-	public int getClientPatienceTime() {
-		return entry.getClientPatienceTime();
-	}
-
-	public void setClientPatienceTime(int clientPatienceTime) {
-		entry.setClientPatienceTime(clientPatienceTime);
-	}
-
+	
 	public void setConfortChoice(int confortChoice) {
 		entry.setConfortChoice(confortChoice);
 	}
@@ -106,7 +56,7 @@ public class SelectBean {
 	public int getDuration() {
 		return entry.getDuration();
 	}
-	public String getkeyWord() {
+	public String getKeyWord() {
 		return entry.getKeyWord();
 		}
 	public void setKeyWord(String keyWord) {
@@ -124,5 +74,5 @@ public class SelectBean {
 	public void seteffortLevel(int effortLevel) {
 		entry.setEffortLevel(effortLevel);
 	}
-	
+
 }
