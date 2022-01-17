@@ -5,67 +5,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import business.client.AbstractClient;
-import business.client.SejourEntry;
-import core.StatisticManager;
+import business.client.JourneyEntry;
 import dao.StatisticPersistence;
 
-public class JdbcPersistence implements StatisticPersistence {
+public class JdbcPersistence  {
 	
-	@Override
 	public void dataInit() {
 		System.err.println("Please don't forget to create tables manually by importing creation.sql in your database !");
 	}
 
-	@Override
-	public int persist(SejourEntry simulationEntry, StatisticManager statisticManager) {
-		int idEntry = persistEntry(simulationEntry);
-		if (idEntry != 0) {
-			persistClients(statisticManager, idEntry);
-		}
-		return idEntry;
-
-	}
-
-	private void persistClients(StatisticManager statisticManager, int idEntry) {
-		List<AbstractClient> servedClients = statisticManager.getServedClients();
-
-		for (AbstractClient client : servedClients) {
-			addClient(idEntry, client, true);
-		}
-
-		List<AbstractClient> nonServedClients = statisticManager.getNonServedClients();
-
-		for (AbstractClient client : nonServedClients) {
-			addClient(idEntry, client, false);
-		}
-
-	}
-
-	private void addClient(int idEntry, AbstractClient client, boolean isServed) {
-		try {
-
-			String insertAddressQuery = "INSERT INTO client (arrival_time, service_start_time, departure_time, "
-					+ "is_served, priority, entry_id) VALUES (?,?,?,?,?,?)";
-
-			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(insertAddressQuery);
-
-			preparedStatement.setInt(1, client.getArrivalTime());
-			preparedStatement.setInt(2, client.getServiceStartTime());
-			preparedStatement.setInt(3, client.getDepartureTime());
-			preparedStatement.setBoolean(4, isServed);
-			preparedStatement.setBoolean(5, client.isPriority());
-			preparedStatement.setInt(6, idEntry);
-
-			preparedStatement.executeUpdate();
-
-			preparedStatement.close();
-		} catch (SQLException se) {
-			System.err.println(se.getMessage());
-		}
-	}
-
-	private int persistEntry(SejourEntry simulationEntry) {
+	private int persistEntry(JourneyEntry simulationEntry) {
 		int idEntry = 0;
 		try {
 
@@ -95,30 +44,6 @@ public class JdbcPersistence implements StatisticPersistence {
 			System.err.println(se.getMessage());
 		}
 		return idEntry;
-	}
-
-	@Override
-	public int servedClientCount(int simulationEntryId) {
-		int count = 0;
-		try {
-
-			String selectAddressQuery = "SELECT count(*) AS co FROM client AS c WHERE c.entry_id = ? AND c.is_served = true";
-
-			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectAddressQuery);
-
-			preparedStatement.setInt(1, simulationEntryId);
-
-			ResultSet result = preparedStatement.executeQuery();
-
-			result.next();
-			count = result.getInt("co");
-
-			preparedStatement.close();
-
-		} catch (SQLException se) {
-			System.err.println(se.getMessage());
-		}
-		return count;
 	}
 
 	public int nonServedClientCount(int simulationEntryId) {

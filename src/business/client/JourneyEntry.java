@@ -6,7 +6,7 @@ package business.client;
 /*
  * modifier les constante qui seront utiliser 
  */
-public class SejourEntry {
+public class JourneyEntry {
     private int simulationDuration;
     private int cashierCount;
     private int minServiceTime;
@@ -31,10 +31,10 @@ public class SejourEntry {
 		confortChoice = confortChoice;
 	}
 
-	public SejourEntry() {
+	public JourneyEntry() {
     }
 
-    public SejourEntry(int simulationDuration, int cashierCount,
+    public JourneyEntry(int simulationDuration, int cashierCount,
             int minServiceTime, int maxServiceTime, int clientArrivalInterval,
             double priorityClientRate, int clientPatienceTime) {
         this.simulationDuration = simulationDuration;

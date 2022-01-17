@@ -3,9 +3,8 @@ package beans;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import business.client.SejourEntry;
+import business.client.JourneyEntry;
 import business.spring.SpringIoC;
-import core.Simulation;
 
 /**
  * Simulation bean controller used to collect simulation entry parameters and to start the simulation.
@@ -19,34 +18,20 @@ public class SelectBean {
 	/**
 	 * Proxy encapsulated object. All get/set of parameters work on this proxy object.
 	 */
-	private SejourEntry entry = new SejourEntry();
+	private JourneyEntry entry = new JourneyEntry();
     private String[] selectedOptions;
-	private Simulation simulation = (Simulation) SpringIoC.getBean("simulation");;
 
 	public SelectBean() {
 	}
 
-	public String findSejour() {
-		simulation.setSimulationEntry(entry);
-		simulation.buildBank();
-		simulation.simulate();
-		return "result";
-	}
 
-	public SejourEntry getEntry() {
+
+	public JourneyEntry getEntry() {
 		return entry;
 	}
 
-	public void setEntry(SejourEntry entry) {
+	public void setEntry(JourneyEntry entry) {
 		this.entry = entry;
-	}
-
-	public Simulation getSimulation() {
-		return simulation;
-	}
-
-	public void setSimulation(Simulation simulation) {
-		this.simulation = simulation;
 	}
 
 	public int getSimulationDuration() {
