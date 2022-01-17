@@ -12,6 +12,24 @@ public class Excursion {
 	private List<Hotel> hotelList;
 	private List<Transport> transportList; //may be use a hashmap to have a specific transport for every site
 	
+	
+	public Excursion() {
+		this.comfortLevel=0;
+		this.price=0;
+	}
+	
+	public void addHotel(Hotel hotel) {
+		this.hotelList.add(hotel);
+	}
+	
+	public void addTransport(Transport transport) {
+		this.transportList.add(transport);
+	}
+	
+	public void addSite(Site site) {
+		this.siteList.add(site);
+	}
+	
 	public List<Site> getSiteList() {
 		return siteList;
 	}
@@ -67,6 +85,8 @@ public class Excursion {
 	}
 	@Override
 	public String toString() {
+		this.updateComfortLevel();
+		this.updatePrice();
 		return "Excursion [price=" + price + ", comfortLevel=" + comfortLevel + ", siteList=" + siteList
 				+ ", hotelList=" + hotelList + ", transportList=" + transportList + "]";
 	}
