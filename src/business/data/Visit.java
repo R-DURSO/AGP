@@ -54,7 +54,8 @@ public class Visit {
 	//TODO: modify toString method
 	@Override
 	public String toString() {
-		return "Visit [price=" + price + ", comfortLevel=" + comfortLevel + ", schedule=" + schedule + "]";
+		int days=schedule.size();
+		return "Visit [price=" + price + ", comfortLevel=" + comfortLevel + ", time period=" + days + "]";
 	}
 	
 	

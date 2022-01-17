@@ -68,4 +68,11 @@ public class Day {
 		return restDay;
 	}
 	
+	public String toString() {
+		if(restDay) {
+			return "This day is a rest day";
+		}else {
+			return "This day, you will have " + this.excursionList.size() + " excursions";
+		}
+	}
 }
