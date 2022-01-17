@@ -1,14 +1,14 @@
-package business.simulation;
+package core;
 
 import business.client.AbstractClient;
-import business.client.SimulationEntry;
+import business.client.SejourEntry;
 import business.spring.SpringIoC;
 
 
 /**
  * This class provides utility static methods for simulation.
  */
-public class SimulationUtility {
+public class SejourUtility {
 	private static int getRandomNumber(int min, int max) {
 		return (int) (Math.random() * (max + 1 - min)) + min;
 	}
@@ -72,10 +72,10 @@ public class SimulationUtility {
 		return null;
 	}
 	
-	public static int generateRandomServiceTime(SimulationEntry entry) {
+	public static int generateRandomServiceTime(SejourEntry entry) {
 		int minServiceTime = entry.getMinServiceTime();
 		int maxServiceTime = entry.getMaxServiceTime();
-		int randomServiceTime = SimulationUtility.getRandomServiceTime(minServiceTime, maxServiceTime);
+		int randomServiceTime = SejourUtility.getRandomServiceTime(minServiceTime, maxServiceTime);
 		return randomServiceTime;
 	}
 

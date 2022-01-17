@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import business.client.AbstractClient;
-import business.client.SimulationEntry;
-import business.simulation.StatisticManager;
+import business.client.SejourEntry;
+import core.StatisticManager;
 import dao.StatisticPersistence;
 
 public class JdbcPersistence implements StatisticPersistence {
@@ -18,7 +18,7 @@ public class JdbcPersistence implements StatisticPersistence {
 	}
 
 	@Override
-	public int persist(SimulationEntry simulationEntry, StatisticManager statisticManager) {
+	public int persist(SejourEntry simulationEntry, StatisticManager statisticManager) {
 		int idEntry = persistEntry(simulationEntry);
 		if (idEntry != 0) {
 			persistClients(statisticManager, idEntry);
@@ -65,7 +65,7 @@ public class JdbcPersistence implements StatisticPersistence {
 		}
 	}
 
-	private int persistEntry(SimulationEntry simulationEntry) {
+	private int persistEntry(SejourEntry simulationEntry) {
 		int idEntry = 0;
 		try {
 

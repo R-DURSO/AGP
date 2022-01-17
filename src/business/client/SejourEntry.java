@@ -6,7 +6,7 @@ package business.client;
 /*
  * modifier les constante qui seront utiliser 
  */
-public class SimulationEntry {
+public class SejourEntry {
     private int simulationDuration;
     private int cashierCount;
     private int minServiceTime;
@@ -14,11 +14,27 @@ public class SimulationEntry {
     private int clientArrivalInterval;
     private double priorityClientRate;
     private int clientPatienceTime;
+    //
+    private int confortChoice;
+    private int price;
+    private int duration;
+    private String keyWord;
+    private int frequency ;
+    private int effortLevel ;
+    
 
-    public SimulationEntry() {
+	public int getConfortChoice() {
+		return confortChoice;
+	}
+
+	public void setConfortChoice(int confortChoice) {
+		confortChoice = confortChoice;
+	}
+
+	public SejourEntry() {
     }
 
-    public SimulationEntry(int simulationDuration, int cashierCount,
+    public SejourEntry(int simulationDuration, int cashierCount,
             int minServiceTime, int maxServiceTime, int clientArrivalInterval,
             double priorityClientRate, int clientPatienceTime) {
         this.simulationDuration = simulationDuration;
@@ -85,5 +101,45 @@ public class SimulationEntry {
     public void setClientPatienceTime(int clientPatienceTime) {
         this.clientPatienceTime = clientPatienceTime;
     }
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
+	public String getKeyWord() {
+		return keyWord;
+	}
+
+	public void setKeyWord(String keyWord) {
+		this.keyWord = keyWord;
+	}
+
+	public int getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(int frequency) {
+		this.frequency = frequency;
+	}
+
+	public int getEffortLevel() {
+		return effortLevel;
+	}
+
+	public void setEffortLevel(int effortLevel) {
+		this.effortLevel = effortLevel;
+	}
 
 }

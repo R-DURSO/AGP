@@ -1,4 +1,4 @@
-package business.simulation;
+package core;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.jfree.ui.RefineryUtilities;
 import business.chart.PieGraphicalResult;
 import business.client.AbstractClient;
 import business.client.AbstractOperation;
-import business.client.SimulationEntry;
+import business.client.SejourEntry;
 import dao.StatisticPersistence;
 
 /**
@@ -17,7 +17,7 @@ public class Simulation {
 	private Bank bank;
 
 	private StatisticManager statisticManager;
-	private SimulationEntry simulationEntry;
+	private SejourEntry simulationEntry;
 	private StatisticPersistence statisticPersistence;
 
 	private int idEntry;
@@ -37,7 +37,7 @@ public class Simulation {
 		for (int currentSystemTime = 0; currentSystemTime <= simulationDuration; currentSystemTime++) {
 
 			statisticManager.simulationDurationRecord();
-			SimulationUtility.printBankStat(currentSystemTime, bank);
+			SejourUtility.printBankStat(currentSystemTime, bank);
 
 			updateBank(currentSystemTime);
 
@@ -45,7 +45,7 @@ public class Simulation {
 			if (newClientArrival) {
 				int serviceTime = generateRandomServiceTime();
 				double priorityClientRate = simulationEntry.getPriorityClientRate();
-				AbstractClient client = SimulationUtility.getRandomClient(priorityClientRate);
+				AbstractClient client = SejourUtility.getRandomClient(priorityClientRate);
 				client.setArrivalTime(currentSystemTime);
 				int clientPatienceTime = simulationEntry.getClientPatienceTime();
 				client.setPatienceTime(clientPatienceTime);
@@ -54,11 +54,11 @@ public class Simulation {
 
 				Cashier freeCashier = bank.getFreeCashier();
 				if (freeCashier == null) {
-					SimulationUtility.printClientArrival(currentSystemTime, false);
+					SejourUtility.printClientArrival(currentSystemTime, false);
 					Queue queue = bank.getQueue();
 					queue.addQueueLast(client);
 				} else {
-					SimulationUtility.printClientArrival(currentSystemTime, true);
+					SejourUtility.printClientArrival(currentSystemTime, true);
 					serveClient(currentSystemTime, freeCashier, client);
 				}
 			}
@@ -85,7 +85,7 @@ public class Simulation {
 				// Leaving client
 				AbstractClient leavingClient = cashier.getServingClient();
 				leavingClient.setDepartureTime(currentSystemTime);
-				SimulationUtility.printClientDeparture(currentSystemTime);
+				SejourUtility.printClientDeparture(currentSystemTime);
 				statisticManager.registerServedClient(leavingClient);
 
 				cashier.setServingClient(null);
@@ -111,7 +111,7 @@ public class Simulation {
 		for (AbstractClient client : impatientClients) {
 			client.setDepartureTime(currentSystemTime);
 			statisticManager.registerNonServedClient(client);
-			SimulationUtility.printClientDepartureWithoutBeingServed(currentSystemTime);
+			SejourUtility.printClientDepartureWithoutBeingServed(currentSystemTime);
 		}
 	}
 
@@ -120,13 +120,13 @@ public class Simulation {
 		AbstractOperation operation = client.getOperation();
 		int serviceTime = operation.getServiceTime();
 		cashier.serve(client);
-		SimulationUtility.printServiceTimeTrace(currentSystemTime, serviceTime);
+		SejourUtility.printServiceTimeTrace(currentSystemTime, serviceTime);
 	}
 
 	private int generateRandomServiceTime() {
 		int minServiceTime = simulationEntry.getMinServiceTime();
 		int maxServiceTime = simulationEntry.getMaxServiceTime();
-		int randomServiceTime = SimulationUtility.getRandomServiceTime(minServiceTime, maxServiceTime);
+		int randomServiceTime = SejourUtility.getRandomServiceTime(minServiceTime, maxServiceTime);
 		return randomServiceTime;
 	}
 
@@ -171,11 +171,11 @@ public class Simulation {
 		this.statisticManager = statisticManager;
 	}
 
-	public SimulationEntry getSimulationEntry() {
+	public SejourEntry getSimulationEntry() {
 		return simulationEntry;
 	}
 
-	public void setSimulationEntry(SimulationEntry simulationEntry) {
+	public void setSimulationEntry(SejourEntry simulationEntry) {
 		this.simulationEntry = simulationEntry;
 	}
 

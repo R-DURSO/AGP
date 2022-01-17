@@ -1,4 +1,4 @@
-package business.simulation;
+package core;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

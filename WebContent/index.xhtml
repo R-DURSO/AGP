@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Agence de voyage pour l'Ile de la Réunion</title>
+</h:head>
+<h:body>
+	<p>
+		<strong>Bienvenue pour votre futur voyage !</strong>
+	</p>
+
+
+	<fieldset>
+
+		<h:form>
+<!--        <h5 style="margin-top:0px">choix de la qualitée d'hébergement </h5>
+-->  <form>
+	 Choisiez le confort pour votre voyage  <br />
+ 	luxueux :<input type="radio" name="radio1" value="#{SelectBean.confortChoice}" checked="checked" />
+	<input type="radio" name="radio1" value="#{SelectBean.confortChoice}" />
+	confortable :<input type="radio" name="radio1" value="#{SelectBean.confortChoice}" />
+	rudimentaire :<input type="radio" name="radio1" value="#{SelectBean.confortChoice}" /><br />
+	</form>   
+
+			prix maximal possible  : <h:inputText value="#{SelectBean.price}" /> <br />
+			lieux ou vous voulez passer : (séparer par des espace) <h:inputText value="#{SelectBean.keyword}" /> <br />
+			fréquence des visites :( max 10) <h:inputText value="#{SelectBean.frequency}" /> <br />
+			effort possible  : ( max 10 ) <h:inputText value="#{SelectBean.priorityClientRate}" /> <br />
+			 
+			<h:commandButton value="Start" action="#{SelectBean.findSejour}" />
+		</h:form>
+	</fieldset>
+</h:body>
+</html>
+<!-- 
+- choisir le critère
+- durée ( peux être ) 
+- le type de séjour 
+-budget
+
+liste des sites 
+-->

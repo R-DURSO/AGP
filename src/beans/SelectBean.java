@@ -3,9 +3,9 @@ package beans;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import business.client.SimulationEntry;
-import business.simulation.Simulation;
+import business.client.SejourEntry;
 import business.spring.SpringIoC;
+import core.Simulation;
 
 /**
  * Simulation bean controller used to collect simulation entry parameters and to start the simulation.
@@ -14,30 +14,30 @@ import business.spring.SpringIoC;
  */
 @ManagedBean
 @SessionScoped
-public class EntryBean {
+public class SelectBean {
 
 	/**
 	 * Proxy encapsulated object. All get/set of parameters work on this proxy object.
 	 */
-	private SimulationEntry entry = new SimulationEntry();
+	private SejourEntry entry = new SejourEntry();
     private String[] selectedOptions;
 	private Simulation simulation = (Simulation) SpringIoC.getBean("simulation");;
 
-	public EntryBean() {
+	public SelectBean() {
 	}
 
-	public String startSimulation() {
+	public String findSejour() {
 		simulation.setSimulationEntry(entry);
 		simulation.buildBank();
 		simulation.simulate();
 		return "result";
 	}
 
-	public SimulationEntry getEntry() {
+	public SejourEntry getEntry() {
 		return entry;
 	}
 
-	public void setEntry(SimulationEntry entry) {
+	public void setEntry(SejourEntry entry) {
 		this.entry = entry;
 	}
 
@@ -103,19 +103,41 @@ public class EntryBean {
 		entry.setClientPatienceTime(clientPatienceTime);
 	}
 
-	// vouvelle méthodes
-    public void setSelectedOptions(String[] selectedOptions) {
-        this.selectedOptions = selectedOptions;
-    }
-    public void selectedOptionsChanged() {
-        String message = "selectedOptions changed to: ";
-        if (selectedOptions != null) {
-            for (int i = 0; i < selectedOptions.length; i++) {
-                if (i > 0) {
-                    message += ", ";
-                }
-                message += selectedOptions[i];
-            }
-        }
-    }
+	public void setConfortChoice(int confortChoice) {
+		entry.setConfortChoice(confortChoice);
+	}
+	public int getprice() {
+		return entry.getPrice();
+	}
+	public void setprice(int price) {
+		entry.setPrice(price);
+	}
+	public int getConfortChoice() {
+		return entry.getConfortChoice();
+	}
+	public void setDuration(int duration) {
+		entry.setDuration(duration);
+	}
+	public int getDuration() {
+		return entry.getDuration();
+	}
+	public String getkeyWord() {
+		return entry.getKeyWord();
+		}
+	public void setKeyWord(String keyWord) {
+		entry.setKeyWord(keyWord);
+	}
+	public void setFrequency( int frequency) {
+		entry.setFrequency(frequency);
+	}
+	public int getFrequency() {
+		return entry.getFrequency();
+	}
+	public int geteffortLevel() {
+		return entry.getEffortLevel();
+	}
+	public void seteffortLevel(int effortLevel) {
+		entry.setEffortLevel(effortLevel);
+	}
+	
 }
