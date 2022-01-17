@@ -9,6 +9,6 @@ import persistence.jdbc.JdbcPersistence;
 public class testLucene {
 	public static void main(String[] args) throws IOException, ParseException {
 		JdbcPersistence persistence = new JdbcPersistence();
-		persistence.luceneSearch("cascade", "rivière");
+		persistence.luceneSearch("Cascades", "rivière");
 	}
 }

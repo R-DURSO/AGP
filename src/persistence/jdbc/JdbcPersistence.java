@@ -85,12 +85,25 @@ public class JdbcPersistence  {
 	    IndexWriterConfig config = new IndexWriterConfig(analyseur);
 	    IndexWriter w = new IndexWriter(index, config);
 	    
+	    
 	    // 3. Indexation des documents
 	    //    Ici on indexe seulement un fichier
 	    File f = new File("src\\persistence\\jdbc\\site\\Cascade_Jacqueline.txt");
    		Document doc = new Document();
    		doc.add(new Field("nom", f.getName(), TextField.TYPE_STORED));
    		doc.add(new Field("contenu", new FileReader(f), TextField.TYPE_NOT_STORED));
+   		w.addDocument(doc);
+   		
+	    File f2 = new File("src\\persistence\\jdbc\\site\\Anse des cascades.txt");
+	    doc = new Document();
+   		doc.add(new Field("nom", f2.getName(), TextField.TYPE_STORED));
+   		doc.add(new Field("contenu", new FileReader(f2), TextField.TYPE_NOT_STORED));
+   		w.addDocument(doc);
+   		
+	    File f3 = new File("src\\persistence\\jdbc\\site\\Aquarium de La Réunion.txt");
+	    doc = new Document();
+   		doc.add(new Field("nom", f3.getName(), TextField.TYPE_STORED));
+   		doc.add(new Field("contenu", new FileReader(f3), TextField.TYPE_NOT_STORED));
    		w.addDocument(doc);
    		//indexer les autres documents de la même façon
    		
@@ -118,5 +131,38 @@ public class JdbcPersistence  {
 	    
 	    // fermeture seulement quand il n'y a plus besoin d'acceder aux resultats
 	    ireader.close();
+	    index.deleteFile("_0.cfe");
+	    index.deleteFile("_0.cfs");
+	    index.deleteFile("_0.si");
+	    index.deleteFile("segments_1");
+	    index.deleteFile("write.lock");
+	    
 	  }
+
+	
+	/**
+	 * 
+	 * Get all Tourist Attractions name
+	 * 
+	 * @return an iterator with all the Hotel
+	 * */
+	private ResultSet getAllTouristAttractionsName() {
+		ResultSet result = null;
+		try {
+			
+			String selectTouristAttractionsQuery = "SELECT nom_site FROM site_touristique";
+			
+			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectTouristAttractionsQuery);
+			
+			result = preparedStatement.executeQuery();
+			
+			preparedStatement.close();
+			
+			
+		} catch (SQLException se) {
+			System.err.println(se.getMessage());
+		}
+		return result;
+	}
 }
+
