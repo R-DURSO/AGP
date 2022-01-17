@@ -8,6 +8,12 @@ public class Visit {
 	private int comfortLevel;
 	private List<Day> schedule;
 	
+	public Visit(int price, int comfort, List<Day> schedule) {
+		this.comfortLevel=comfort;
+		this.price=price;
+		this.schedule=schedule;
+	}
+	
 	public void updatePrice() {
 		int sum =0;
 		for (Day day : schedule) {
