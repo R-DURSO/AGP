@@ -1,5 +1,8 @@
 package core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import business.data.*;
 
 public class TestJourney {
@@ -13,14 +16,18 @@ public class TestJourney {
 		
 		Transport walk = new Walk();
 		
-		Excursion excursion = new Excursion();
+		List<Site> sitelist=new ArrayList<Site>();
+		List<Hotel> hotellist=new ArrayList<Hotel>();
+		List<Transport> transportlist=new ArrayList<Transport>();
+
+		Excursion excursion = new Excursion(0,0,sitelist,hotellist,transportlist); 
 		excursion.addHotel(hotel1);
 		excursion.addSite(site1);
 		excursion.addSite(site2);
 		excursion.addTransport(walk);
 		excursion.addHotel(hotel2);
 		
-		excursion.toString();
+		System.out.println(excursion.toString());
 
 	}
 }

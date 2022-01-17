@@ -13,11 +13,19 @@ public class Excursion {
 	private List<Transport> transportList; //may be use a hashmap to have a specific transport for every site
 	
 	
-	public Excursion() {
-		this.comfortLevel=0;
-		this.price=0;
-	}
 	
+	public Excursion(int price, int comfortLevel, List<Site> siteList, List<Hotel> hotelList,
+			List<Transport> transportList) {
+		super();
+		this.price = price;
+		this.comfortLevel = comfortLevel;
+		this.siteList = siteList;
+		this.hotelList = hotelList;
+		this.transportList = transportList;
+	}
+
+
+
 	public void addHotel(Hotel hotel) {
 		this.hotelList.add(hotel);
 	}
@@ -83,11 +91,21 @@ public class Excursion {
 		}
 		this.price=sum;
 	}
+	
+	public String getSiteName() {
+		String result = "";
+		for(Site site : siteList) {
+			result += site.getName();
+			result += " ";
+		}
+		return result;
+	}
+	
 	@Override
 	public String toString() {
 		this.updateComfortLevel();
 		this.updatePrice();
-		return "Excursion [price=" + price + ", comfortLevel=" + comfortLevel + ", siteList=" + siteList
+		return "Excursion [price=" + price + ", comfortLevel=" + comfortLevel + ", sites visités: " + this.getSiteName()
 				+ ", hotelList=" + hotelList + ", transportList=" + transportList + "]";
 	}
 	
