@@ -3,6 +3,8 @@ package business.data;
 public class Site {
 	private String description;
 	private String name;
+	private int price;
+	private int effort; //to define clearly
 	//ajouter la localisation geo ?
 	
 	public Site() {
@@ -30,4 +32,21 @@ public class Site {
 	public void setName(String name) {
 		this.name=name;
 	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public int getEffort() {
+		return effort;
+	}
+
+	public void setEffort(int effort) {
+		this.effort = effort;
+	}
+	
 }
