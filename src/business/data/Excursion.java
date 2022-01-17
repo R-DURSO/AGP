@@ -65,5 +65,11 @@ public class Excursion {
 		}
 		this.price=sum;
 	}
+	@Override
+	public String toString() {
+		return "Excursion [price=" + price + ", comfortLevel=" + comfortLevel + ", siteList=" + siteList
+				+ ", hotelList=" + hotelList + ", transportList=" + transportList + "]";
+	}
+	
 	
 }

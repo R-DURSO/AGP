@@ -6,6 +6,7 @@ public class Site {
 	//ajouter la localisation geo ?
 	
 	public Site() {
+		this.name=null;
 		this.description=null;
 	}
 
