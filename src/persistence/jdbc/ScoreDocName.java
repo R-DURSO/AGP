@@ -7,6 +7,7 @@ public class ScoreDocName {
 		this.docName = docName;
 		this.score = score;
 	}
+	 
 	public String getDocName() {
 		return docName;
 	}
