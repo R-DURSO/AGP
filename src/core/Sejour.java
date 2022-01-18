@@ -72,25 +72,26 @@ public class Sejour {
 		Excursion bestExcursion = new Excursion();
 		int index = 0;
 		int newactivity = 0;
-		if (duration - sites.get(index).getDuration() >= 0 && effort - sites.get(index).getEffort() >= 0) {
-			bestExcursion.addSite(sites.get(index));
-			duration = duration - sites.get(index).getDuration();
-			effort = effort - sites.get(index).getEffort();
-			newactivity++;
-			sites.remove(index);
-		} else {
-			index++;
-		}
-		if (duration <= 0 || effort <= 0) {
-			if (lasHotel != null) {
-				lasHotel = bestExcursion.getHotelList().get(newactivity);
+		while (sites.size() != 0) {
+			if (duration - sites.get(index).getDuration() >= 0 && effort - sites.get(index).getEffort() >= 0) {
+				bestExcursion.addSite(sites.get(index));
+				duration = duration - sites.get(index).getDuration();
+				effort = effort - sites.get(index).getEffort();
+				newactivity++;
+				sites.remove(index);
 			} else {
-				lasHotel = bestExcursion.getHotelList().get(newactivity - 1);
+				index++;
+			}
+			if (duration <= 0 || effort <= 0) {
+				if (lasHotel != null) {
+					lasHotel = bestExcursion.getHotelList().get(newactivity);
+				} else {
+					lasHotel = bestExcursion.getHotelList().get(newactivity - 1);
+
+				}
 
 			}
-
 		}
-
 		return bestExcursion;
 	}
 
