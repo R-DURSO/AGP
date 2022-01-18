@@ -7,10 +7,15 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
 	xmlns:context="http://www.springframework.org/schema/context">
 
-	<bean id="simulation" class="business.simulation.Simulation">
-		<property name="simulationEntry" ref="entry" />
-		<property name="statisticManager" ref="manager" />
-		<property name="statisticPersistence" ref="hibernateDAO" />
+	<bean id="journey" class="business.core.Sejour">
+		<property name="critere" ref="critere" />
+		<property name="sejourLong">
+			<value>7</value>
+		</property>
+	</bean>
+	
+	<bean id="critere" class="business.data.SejourCritere">
+		<property name="critere" ref="critere" />
 	</bean>
 
 	<bean id="persistenceDAO" class="dao.StatisticPersistence"

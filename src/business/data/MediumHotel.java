@@ -3,7 +3,7 @@ package business.data;
 public class MediumHotel extends Hotel {
 
 	
-	public MediumHotel() {
-		super(2,2);//mock
+	public MediumHotel(Position pos, String name) {
+		super(2,2, pos, name);//mock
 	}
 }
