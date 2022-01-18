@@ -12,7 +12,9 @@ public class Excursion {
 	private List<Hotel> hotelList;
 	private List<Transport> transportList; //may be use a hashmap to have a specific transport for every site
 	
-	
+	public Excursion() {
+		
+	}
 	
 	public Excursion(int price, int comfortLevel, List<Site> siteList, List<Hotel> hotelList,
 			List<Transport> transportList) {
