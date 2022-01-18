@@ -3,34 +3,68 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-<h:head>
-	<title>Agence de voyage pour l'Ile de la Réunion</title>
-</h:head>
-<h:body>
-	<p>
-		<strong>Bienvenue pour votre futur voyage !</strong>
-	</p>
-
-
-	<fieldset>
-
-		<h:form>
-	 Choisiez le confort pour votre voyage  <br />
- 	luxueux :<input type="radio" name="radio1" value="#{selectBean.confortChoice}" checked="checked" />
-	confortable :<input type="radio" name="radio1" value="#{selectBean.confortChoice}" />
-	rudimentaire :<input type="radio" name="radio1" value="#{selectBean.confortChoice}" /><br />
-
-
-			prix maximal possible  : <h:inputText value="#{selectBean.price}" /> <br />
-			lieux ou vous voulez passer : (séparer par des espace) <h:inputText value="#{selectBean.keyWord}" /> <br />
-			fréquence des visites :( max 10) <h:inputText value="#{selectBean.frequency}" /> <br />
-			effort possible  : ( max 10 ) <h:inputText value="#{selectBean.effortLevel}" /> <br />
-			 
-			<h:commandButton value="Trouver le voyage de vos rêve" action="#{selectBean.findSejour}" />
-		</h:form>
-	</fieldset>
-</h:body>
+	<h:head>
+		<title>Agence de voyage pour l'Ile de la Réunion</title>
+	</h:head>
+	<h:body>
+		<p>
+			<strong>Bienvenue pour votre futur voyage !</strong>
+		</p>
+	
+	
+		<fieldset>
+	
+			<h:form>
+				<!-- <p>Choisissez le confort pour votre voyage</p> -->
+				<p:outputLabel for="confort" value="Choisissez le confort pour votre voyage"/>
+				<p:selectOneRadio id="confort" value="#{selectBean.confortChoice}" unselectable="true">
+		            <f:selectItem itemLabel="Luxueux" itemValue="3"/>
+		            <f:selectItem itemLabel="Confortable" itemValue="2"/>
+		            <f:selectItem itemLabel="Rudimentaire" itemValue="1"/>
+        		</p:selectOneRadio>
+				
+				<p:outputLabel for="price" value="Prix maximal: "/>
+				<br/>
+                <p:inputNumber id="price" value="#{selectBean.price}" symbol=" €" symbolPosition="s" decimalSeparator="," thousandSeparator=" " />
+				<br/>
+				
+				<p:outputLabel for="frequency" value="Fréquence des visites: ( max 10)"/>
+				<br/>
+				<p:selectOneMenu id="frequency" value="#{selectBean.frequency}" dynamic="true">
+                    <f:selectItem itemLabel="Select Frequency" itemValue=""/>
+                    <f:selectItems value="#{selectBean.scale}"/>
+                </p:selectOneMenu>
+                <br/>
+                
+                <p:outputLabel for="effort" value="Effort possible: ( max 10 )"/>
+                <br/>
+                <p:selectOneMenu id="effort" value="#{selectBean.effortLevel}" dynamic="true">
+                    <f:selectItem itemLabel="Select Effort" itemValue=""/>
+                    <f:selectItems value="#{selectBean.scale}"/>
+                </p:selectOneMenu>
+                <br/>
+				
+				<!-- <label for="price">Prix maximal: </label>
+				<h:inputText id="price" value="#{selectBean.price}" /> -->
+				
+				<p:outputLabel for="keywords" value="Lieux ou vous voulez passer: (séparer par des espace)"/>
+				<br/>
+				<p:inputText id="keywords" value="#{selectBean.keyWord}" />
+				<br/>
+				
+				<!-- <label for="frequency">Fréquence des visites: ( max 10)</label>
+				<h:inputText id="frequency" value="#{selectBean.frequency}" />
+				
+				<label for="effort">Effort possible: ( max 10 )</label>
+				<h:inputText id="effort" value="#{selectBean.effortLevel}" /> -->
+	
+				<h:commandButton value="Trouver le voyage de vos rêve" action="#{selectBean.findSejour}" />
+			</h:form>
+			
+		</fieldset>
+	</h:body>
 </html>
 <!-- 
 - choisir le critère

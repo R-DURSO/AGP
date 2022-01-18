@@ -21,7 +21,7 @@ public class SejourCritere {
 	}
 
 	public void setConfortChoice(int confortChoice) {
-		confortChoice = confortChoice;
+		this.confortChoice = confortChoice;
 	}
 
 	public SejourCritere() {
