@@ -3,7 +3,7 @@ package beans;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import business.data.JourneyEntry;
+import business.data.SejourCritere;
 import business.spring.SpringIoC;
 
 /**
@@ -18,7 +18,7 @@ public class SelectBean {
 	/**
 	 * Proxy encapsulated object. All get/set of parameters work on this proxy object.
 	 */
-	private JourneyEntry entry = new JourneyEntry();
+	private SejourCritere entry = new SejourCritere();
     private String[] selectedOptions;
 
 	public SelectBean() {
@@ -29,11 +29,11 @@ public class SelectBean {
 	}
 
 
-	public JourneyEntry getEntry() {
+	public SejourCritere getEntry() {
 		return entry;
 	}
 
-	public void setEntry(JourneyEntry entry) {
+	public void setEntry(SejourCritere entry) {
 		this.entry = entry;
 	}
 

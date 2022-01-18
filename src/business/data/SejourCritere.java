@@ -6,7 +6,7 @@ package business.data;
 /*
  * modifier les constante qui seront utiliser 
  */
-public class JourneyEntry {
+public class SejourCritere {
 
     private int confortChoice;
     private int price;
@@ -24,10 +24,10 @@ public class JourneyEntry {
 		confortChoice = confortChoice;
 	}
 
-	public JourneyEntry() {
+	public SejourCritere() {
     }
 
-    public JourneyEntry(int confortChoice, int price,
+    public SejourCritere(int confortChoice, int price,
             int duration, String keyWord, int frequency,
             int effortLevel) {
 

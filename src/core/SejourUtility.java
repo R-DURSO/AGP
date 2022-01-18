@@ -1,7 +1,7 @@
 package core;
 
 
-import business.data.JourneyEntry;
+import business.data.SejourCritere;
 import business.spring.SpringIoC;
 
 
