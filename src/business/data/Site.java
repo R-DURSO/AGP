@@ -7,12 +7,15 @@ public class Site {
 	private int effort; // to define clearly
 	private boolean type; // faux si culturel vrai sinon
 	private Position pos;
+	private int duration;
 	// ajouter la localisation geo ?
+	
 
 	public Site() {
 		this.name = null;
 		this.description = null;
 	}
+	
 	public Site(String name) {
 		this.name = name;
 		this.description = null;
@@ -21,13 +24,15 @@ public class Site {
 		this.type = true;
 		this.pos = null;
 	}
-	public Site(String name, String description, int price, int effort, boolean type, Position pos) {
+	
+	public Site(String name, String description, int price, int effort, boolean type, Position pos, int duration) {
 		this.name = name;
 		this.description = description;
 		this.price = price;
 		this.effort = effort;
 		this.type = type;
 		this.pos = pos;
+		this.setDuration(duration);
 	}
 
 	public boolean isType() {
@@ -76,6 +81,14 @@ public class Site {
 
 	public void setEffort(int effort) {
 		this.effort = effort;
+	}
+
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
 	}
 
 }
