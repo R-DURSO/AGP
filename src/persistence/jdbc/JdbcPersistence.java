@@ -3,7 +3,8 @@ package persistence.jdbc;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.io.*;
 import java.nio.file.*;
 
@@ -15,6 +16,8 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.*;
+
+import business.data.Hotel;
 
 public class JdbcPersistence  {
 	
@@ -28,15 +31,22 @@ public class JdbcPersistence  {
 	 * 
 	 * @return an iterator with all the Hotel
 	 * */
-	public ResultSet getAllHotel() {
+	public ResultSet getAllHotel(int comfort) {
 		ResultSet result = null;
+		int comfortLevel;
+		int priceLevel;
+		ArrayList <Hotel> HotelList =  new ArrayList<Hotel>();
 		try {
 			
-			String selectHotelQuery = "SELECT *  FROM hotel";
+			String selectHotelQuery = "SELECT *  FROM hotel WHERE confort = ?";
 			
 			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectHotelQuery);
 			
+			preparedStatement.setInt(1,comfort);
+			
 			result = preparedStatement.executeQuery();
+			
+			result.getInt("");
 			
 			preparedStatement.close();
 			
@@ -71,9 +81,18 @@ public class JdbcPersistence  {
 		}
 		return result;
 	}
+
 	
-	public void luceneSearch(String motCle1,String motCle2) throws IOException, ParseException {
+	/**
+	 * 
+	 * Get all Tourist Attractions
+	 * 
+	 * @return an iterator with all the Hotel
+	 * */
+	private Iterator<ScoreDocName> luceneSearch (String motCle1,String motCle2) throws IOException, ParseException {
 		int MAX_RESULTS = 100; //nombre max de réponses retournées
+		ArrayList <ScoreDocName> scoreList = new ArrayList<ScoreDocName>();
+		Iterator<ScoreDocName> scoreIterator = null;
 	    // 1. Specifier l'analyseur pour le texte.
 	    //    Le même analyseur est utilisé pour l'indexation et la recherche
 	    Analyzer analyseur = new StandardAnalyzer();
@@ -88,19 +107,19 @@ public class JdbcPersistence  {
 	    
 	    // 3. Indexation des documents
 	    //    Ici on indexe seulement un fichier
-	    File f = new File("src\\persistence\\jdbc\\site\\Cascade_Jacqueline.txt");
+	    File f = new File("src\\persistence\\jdbc\\site\\5.txt");
    		Document doc = new Document();
    		doc.add(new Field("nom", f.getName(), TextField.TYPE_STORED));
    		doc.add(new Field("contenu", new FileReader(f), TextField.TYPE_NOT_STORED));
    		w.addDocument(doc);
    		
-	    File f2 = new File("src\\persistence\\jdbc\\site\\Anse des cascades.txt");
+	    File f2 = new File("src\\persistence\\jdbc\\site\\0.txt");
 	    doc = new Document();
    		doc.add(new Field("nom", f2.getName(), TextField.TYPE_STORED));
    		doc.add(new Field("contenu", new FileReader(f2), TextField.TYPE_NOT_STORED));
    		w.addDocument(doc);
    		
-	    File f3 = new File("src\\persistence\\jdbc\\site\\Aquarium de La Réunion.txt");
+	    File f3 = new File("src\\persistence\\jdbc\\site\\1.txt");
 	    doc = new Document();
    		doc.add(new Field("nom", f3.getName(), TextField.TYPE_STORED));
    		doc.add(new Field("contenu", new FileReader(f3), TextField.TYPE_NOT_STORED));
@@ -126,9 +145,11 @@ public class JdbcPersistence  {
 	    for(int i=0; i<resultats.scoreDocs.length; i++) {
 	    	int docId = resultats.scoreDocs[i].doc;
 	    	Document d = searcher.doc(docId);
+	    	ScoreDocName scoreDocName = new ScoreDocName(d.get("nom"),resultats.scoreDocs[i].score);
+	    	scoreList.add(scoreDocName);
+	    	scoreIterator= scoreList.iterator();
 	    	System.out.println(d.get("nom") + ": score " + resultats.scoreDocs[i].score);
 	    }
-	    
 	    // fermeture seulement quand il n'y a plus besoin d'acceder aux resultats
 	    ireader.close();
 	    index.deleteFile("_0.cfe");
@@ -136,7 +157,7 @@ public class JdbcPersistence  {
 	    index.deleteFile("_0.si");
 	    index.deleteFile("segments_1");
 	    index.deleteFile("write.lock");
-	    
+	    return scoreIterator;
 	  }
 
 	
