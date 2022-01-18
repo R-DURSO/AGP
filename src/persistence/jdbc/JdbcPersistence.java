@@ -18,6 +18,7 @@ import org.apache.lucene.search.*;
 import org.apache.lucene.store.*;
 
 import business.data.Hotel;
+import business.data.Position;
 
 public class JdbcPersistence  {
 	
@@ -35,18 +36,28 @@ public class JdbcPersistence  {
 		ResultSet result = null;
 		int comfortLevel;
 		int priceLevel;
+		Position position = new Position(0,0);
+		String name;
 		ArrayList <Hotel> HotelList =  new ArrayList<Hotel>();
 		try {
 			
-			String selectHotelQuery = "SELECT *  FROM hotel WHERE confort = ?";
+			String selectHotelQuery = "SELECT nom, ST_X(t.position) as x_coordinate, ST_Y(t.myPointColumn) as y_coordinate "
+					+ ", prix, confort, FROM hotel WHERE confort = ?";
 			
 			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectHotelQuery);
 			
 			preparedStatement.setInt(1,comfort);
 			
 			result = preparedStatement.executeQuery();
+		
+			name = result.getString("nom");
+			position.setX(result.getFloat("x_coordinate"));
+			position.setY(result.getFloat("y_coordinate"));
+			comfortLevel = result.getInt("confort");
+			priceLevel = result.getInt("prix");
 			
-			result.getInt("");
+			//Hotel hotel = new Hotel(comfortLevel,priceLevel,position,name);
+			
 			
 			preparedStatement.close();
 			
