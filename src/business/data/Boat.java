@@ -2,8 +2,8 @@ package business.data;
 
 public class Boat extends Transport{
 
-	public Boat() {
-		super(3,-1);
+	public Boat(int speed) {
+		super(3,-1, speed);
 	}
 
 }
