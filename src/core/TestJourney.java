@@ -8,7 +8,7 @@ import business.data.*;
 public class TestJourney {
 
 	public static void main(String[] args) {
-		Site site1 = new Site("monument");
+		/*Site site1 = new Site("monument");
 		Site site2 = new Site("museum");
 		
 		Hotel hotel1 = new CheapHotel();
@@ -28,6 +28,6 @@ public class TestJourney {
 		excursion.addHotel(hotel2);
 		
 		System.out.println(excursion.toString());
-
+*/
 	}
 }

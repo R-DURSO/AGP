@@ -17,7 +17,10 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.*;
 
+import business.data.CheapHotel;
 import business.data.Hotel;
+import business.data.LuxuryHotel;
+import business.data.MediumHotel;
 import business.data.Position;
 
 public class JdbcPersistence  {
@@ -38,7 +41,7 @@ public class JdbcPersistence  {
 		int priceLevel;
 		Position position = new Position(0,0);
 		String name;
-		ArrayList <Hotel> HotelList =  new ArrayList<Hotel>();
+		ArrayList <Hotel> hotelList =  new ArrayList<Hotel>();
 		try {
 			
 			String selectHotelQuery = "SELECT nom, ST_X(t.position) as x_coordinate, ST_Y(t.myPointColumn) as y_coordinate "
@@ -57,7 +60,16 @@ public class JdbcPersistence  {
 			priceLevel = result.getInt("prix");
 			
 			//Hotel hotel = new Hotel(comfortLevel,priceLevel,position,name);
-			
+			if(priceLevel<100) {
+				Hotel hotel = new CheapHotel(comfortLevel, priceLevel, position, name);
+				hotelList.add(hotel);
+			}else if(priceLevel<150) {
+				Hotel hotel = new MediumHotel(comfortLevel, priceLevel, position, name);
+				hotelList.add(hotel);
+			}else {
+				Hotel hotel = new LuxuryHotel(comfortLevel, priceLevel, position, name);
+				hotelList.add(hotel);
+			}
 			
 			preparedStatement.close();
 			
