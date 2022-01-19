@@ -22,6 +22,7 @@ import business.data.Hotel;
 import business.data.LuxuryHotel;
 import business.data.MediumHotel;
 import business.data.Position;
+import business.data.Site;
 
 public class JdbcPersistence  {
 	
@@ -85,23 +86,37 @@ public class JdbcPersistence  {
 	 * 
 	 * Get all Tourist Attractions
 	 * 
-	 * @return an iterator with all the Hotel
+	 * @return an iterator with all the TouristAttractions
 	 * */
-	public ResultSet allTouristAttractions() {
-		ResultSet result = null;
-		String nom_site;
-		int priceLevel;
-		Position position = new Position(0,0);
+	public Iterator<Site> allTouristAttractions() {
 		String name;
-		ArrayList <Hotel> hotelList =  new ArrayList<Hotel>();
-		Iterator<Hotel> hotelIterator = null;
+		int price;
+		int effort;
+		String type;
+		Position position = new Position(0,0);
+		int duration;
+		ArrayList <Site> SiteList =  new ArrayList<Site>();
+		Iterator<Site> SiteIterator = null;
 		try {
 			
 			String selectTouristAttractionsQuery = "SELECT * FROM site_touristique";
 			
 			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectTouristAttractionsQuery);
 			
-			result = preparedStatement.executeQuery();
+			ResultSet result = preparedStatement.executeQuery();
+			
+			name = result.getString("nom_site");
+			position.setX(result.getFloat("x_coordinate"));
+			position.setY(result.getFloat("y_coordinate"));
+			type = result.getString("type_lieux");
+			effort = result.getInt("niveau_effort");
+			duration = result.getInt("duree_activitee");
+			price = result.getInt("prix");
+			
+			while (result.next()) {
+				Site site = new Site(name,price,effort,type,position,duration);
+				SiteList.add(site);
+			}
 			
 			preparedStatement.close();
 			
@@ -109,7 +124,8 @@ public class JdbcPersistence  {
 		} catch (SQLException se) {
 			System.err.println(se.getMessage());
 		}
-		return result;
+		SiteIterator = SiteList.iterator();
+		return SiteIterator;
 	}
 
 	/**
@@ -119,22 +135,25 @@ public class JdbcPersistence  {
 	 * @throws SQLException
 	 */
 	public int luxuriousHotelMean() throws SQLException {
-		ResultSet result = null;
+		int meanHotelPrice = 0;
 		try {
 			
 			String selectluxuriousHotelMeanQuery = "SELECT AVG(prix) FROM hotel WHERE prix >= 150 ";
 			
 			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectluxuriousHotelMeanQuery);
 			
-			result = preparedStatement.executeQuery();
+			ResultSet result = preparedStatement.executeQuery();
+			
+			meanHotelPrice = result.getInt(1);
 			
 			preparedStatement.close();
 			
 			
 		} catch (SQLException se) {
 			System.err.println(se.getMessage());
+			System.out.println("test");
 		}
-		return result.getInt(1);
+		return meanHotelPrice;
 	}
 	
 	
