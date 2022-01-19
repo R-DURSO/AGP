@@ -1,8 +1,7 @@
 package business.core;
-
-
 import java.util.List;
 
+import business.data.Excursion;
 import business.data.Hotel;
 import business.data.Position;
 import business.data.Site;
@@ -63,8 +62,32 @@ public class SejourUtility {
 	}
 
 
-	
+	public static int sumEffort(List<Excursion> excursions) {
+		int sum = 0;
+		for(Excursion ex : excursions) {
+			for (Site site : ex.getSiteList()) {
+				sum =+ site.getEffort();
+			}
+		}
+		return sum;
+	}
+	public static int sumEffortSite(List<Site> sites) {
+		int sum = 0;
+			for (Site site : sites) {
+				sum =+ site.getEffort();
+			}
 
+		return sum;
+	}
+	public static int sumPrice(List<Excursion> excursions) {
+		int sum = 0;
+		for(Excursion ex : excursions) {
+			for (Site site : ex.getSiteList()) {
+				sum =+ site.getPrice();
+			}
+		}
+		return sum;
+	}
 	public static boolean newClientArrival(int clientArrivalInterval, int simIter) {
 		return simIter % clientArrivalInterval == 0;
 	}
