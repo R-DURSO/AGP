@@ -4,8 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
-//import java.util.Collections;
 import java.util.Iterator;
 import java.io.*;
 import java.nio.file.*;
@@ -91,6 +89,12 @@ public class JdbcPersistence  {
 	 * */
 	public ResultSet allTouristAttractions() {
 		ResultSet result = null;
+		String nom_site;
+		int priceLevel;
+		Position position = new Position(0,0);
+		String name;
+		ArrayList <Hotel> hotelList =  new ArrayList<Hotel>();
+		Iterator<Hotel> hotelIterator = null;
 		try {
 			
 			String selectTouristAttractionsQuery = "SELECT * FROM site_touristique";
