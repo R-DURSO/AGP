@@ -46,21 +46,21 @@ public class JdbcPersistence  {
 		try {
 			
 			String selectHotelQuery = "SELECT nom, ST_X(t.position) as x_coordinate, ST_Y(t.myPointColumn) as y_coordinate "
-					+ ", prix, confort, FROM hotel WHERE confort = ?";
+					+ ", prix, confort FROM hotel WHERE confort = ?";
 			
 			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectHotelQuery);
 			
-			preparedStatement.setInt(1,comfort);
+			//preparedStatement.setInt(1,comfort);
 			
 			ResultSet result = preparedStatement.executeQuery();
-		
-			name = result.getString("nom");
-			position.setX(result.getFloat("x_coordinate"));
-			position.setY(result.getFloat("y_coordinate"));
-			comfortLevel = result.getInt("confort");
-			priceLevel = result.getInt("prix");
+	
 			
 			while (result.next()) {
+				name = result.getString("nom");
+				position.setX(result.getFloat("x_coordinate"));
+				position.setY(result.getFloat("y_coordinate"));
+				comfortLevel = result.getInt("confort");
+				priceLevel = result.getInt("prix");
 				if(priceLevel<100) {
 					Hotel hotel = new CheapHotel(comfortLevel, priceLevel, position, name);
 					hotelList.add(hotel);
@@ -88,7 +88,7 @@ public class JdbcPersistence  {
 	 * 
 	 * @return an iterator with all the TouristAttractions
 	 * */
-	public Iterator<Site> allTouristAttractions() {
+	private Iterator<Site> allTouristAttractions() {
 		String name;
 		int price;
 		int effort;
@@ -159,8 +159,9 @@ public class JdbcPersistence  {
 	 * @return mean of the price of the average hotel
 	 * @throws SQLException
 	 */
-	public int averageHotelMean() throws SQLException {
+	public float averageHotelMean() throws SQLException {
 		ResultSet result = null;
+		float meanHotelPrice = 0;
 		try {
 			
 			String selectAverageHotelMeanQuery = "SELECT AVG(prix) FROM hotel WHERE prix >= 100 AND prix < 150";
@@ -168,14 +169,15 @@ public class JdbcPersistence  {
 			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectAverageHotelMeanQuery);
 			
 			result = preparedStatement.executeQuery();
-			
+			result.next();
+			meanHotelPrice = result.getFloat(1);
 			preparedStatement.close();
 			
 			
 		} catch (SQLException se) {
 			System.err.println(se.getMessage());
 		}
-		return result.getInt(1);
+		return meanHotelPrice;
 	}
 	
 	/**
@@ -184,8 +186,9 @@ public class JdbcPersistence  {
 	 * @return mean of the price of the eco hotel
 	 * @throws SQLException
 	 */
-	public int ecoHotelMean() throws SQLException {
+	public float ecoHotelMean() throws SQLException {
 		ResultSet result = null;
+		float meanHotelPrice = 0;
 		try {
 			
 			String selectEcoHotelMeanQuery = "SELECT AVG(prix) FROM hotel WHERE prix < 100";
@@ -193,14 +196,15 @@ public class JdbcPersistence  {
 			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectEcoHotelMeanQuery);
 			
 			result = preparedStatement.executeQuery();
-			
+			result.next();
+			meanHotelPrice = result.getFloat(1);
 			preparedStatement.close();
 			
 			
 		} catch (SQLException se) {
 			System.err.println(se.getMessage());
 		}
-		return result.getInt(1);
+		return meanHotelPrice;
 	}
 	
 	
@@ -210,10 +214,11 @@ public class JdbcPersistence  {
 	 * 
 	 * @return an iterator with all the Hotel
 	 * */
-	public Iterator<ScoreDocName> luceneSearch (String keyWord1,String keyWord2) throws IOException, ParseException {
+	private Iterator<ScoreDocName> luceneSearch (String keyWord1,String keyWord2) throws IOException, ParseException {
 		int MAX_RESULTS = 100; //nombre max de réponses retournées
 		ArrayList <ScoreDocName> scoreList = new ArrayList<ScoreDocName>();
 		Iterator<ScoreDocName> scoreIterator = null;
+		Iterator <String> iteratorIdList = getAllTouristAttractionsId();
 	    // 1. Specifier l'analyseur pour le texte.
 	    //    Le même analyseur est utilisé pour l'indexation et la recherche
 	    Analyzer analyseur = new StandardAnalyzer();
@@ -228,26 +233,16 @@ public class JdbcPersistence  {
 	    
 	    // 3. Indexation des documents
 	    //    Ici on indexe seulement un fichier
-	    File f = new File("src\\persistence\\jdbc\\site\\1.txt");
-   		Document doc = new Document();
-   		doc.add(new Field("nom", f.getName(), TextField.TYPE_STORED));
-   		doc.add(new Field("contenu", new FileReader(f), TextField.TYPE_NOT_STORED));
-   		w.addDocument(doc);
-   		
-	    File f2 = new File("src\\persistence\\jdbc\\site\\0.txt");
-	    doc = new Document();
-   		doc.add(new Field("nom", f2.getName(), TextField.TYPE_STORED));
-   		doc.add(new Field("contenu", new FileReader(f2), TextField.TYPE_NOT_STORED));
-   		w.addDocument(doc);
-   		
-	    File f3 = new File("src\\persistence\\jdbc\\site\\5.txt");
-	    doc = new Document();
-   		doc.add(new Field("nom", f3.getName(), TextField.TYPE_STORED));
-   		doc.add(new Field("contenu", new FileReader(f3), TextField.TYPE_NOT_STORED));
-   		w.addDocument(doc);
-   		//indexer les autres documents de la même façon
-   		
-   		w.close(); //on ferme le index writer après l'indexation de tous les documents
+	    while(iteratorIdList.hasNext()) {
+	    	String fileName = iteratorIdList.next()+".txt";
+	    	//System.out.println("nom du fichier : "+fileName);
+		    File f = new File("src\\persistence\\jdbc\\site\\"+fileName);
+	   		Document doc = new Document();
+	   		doc.add(new Field("nom", f.getName(), TextField.TYPE_STORED));
+	   		doc.add(new Field("contenu", new FileReader(f), TextField.TYPE_NOT_STORED));
+	   		w.addDocument(doc);
+	    }		
+   		w.close();
 
     	// 4. Interroger l'index
 	    DirectoryReader ireader = DirectoryReader.open(index);
@@ -288,25 +283,27 @@ public class JdbcPersistence  {
 	 * 
 	 * Get all Tourist Attractions name
 	 * 
-	 * @return an iterator with all the Hotel
+	 * @return a iterator with all the tourist attractions id
 	 * */
-	private ResultSet getAllTouristAttractionsName() {
-		ResultSet result = null;
+	private Iterator <String> getAllTouristAttractionsId() {
+		ArrayList <String> idList = new ArrayList<String>();
 		try {
 			
-			String selectTouristAttractionsQuery = "SELECT nom_site FROM site_touristique";
+			String selectTouristAttractionsQuery = "SELECT id_site FROM site_touristique";
 			
 			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectTouristAttractionsQuery);
 			
-			result = preparedStatement.executeQuery();
-			
+			ResultSet result = preparedStatement.executeQuery();
+			while(result.next()) {
+				idList.add(result.getString(1));
+			}
 			preparedStatement.close();
-			
 			
 		} catch (SQLException se) {
 			System.err.println(se.getMessage());
 		}
-		return result;
+		Iterator <String> iteratorIdList = idList.iterator();
+		return iteratorIdList;
 	}
 }
 
