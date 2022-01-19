@@ -32,6 +32,45 @@ public class JdbcPersistence  {
 	
 	/**
 	 * 
+	 * This method get all Station and their position
+	 * 
+	 * @return an iterator with the Station name and their position
+	 * */
+	public Iterator<NamePosStation> getStation() {
+		String name;
+		ArrayList <NamePosStation> namePosStationList =  new ArrayList<NamePosStation>();
+		Iterator<NamePosStation> namePosStationIterator = null;
+		try {
+			
+			String selectNamePosStationQuery = "SELECT DISTINCT nom_station, ST_X(position) as x_coordinate,"
+					+ "ST_Y(position) as y_coordinate "
+					+ "FROM station";
+			
+			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectNamePosStationQuery);
+						
+			ResultSet result = preparedStatement.executeQuery();
+	
+			
+			while (result.next()) {
+				Position position = new Position(0,0);
+				name = result.getString("nom_station");
+				position.setX(result.getFloat("x_coordinate"));
+				position.setY(result.getFloat("y_coordinate"));
+				NamePosStation namePosStation = new NamePosStation(name,position);
+				namePosStationList.add(namePosStation);
+			}
+			preparedStatement.close();
+			
+			
+		} catch (SQLException se) {
+			System.err.println(se.getMessage());
+		}
+		namePosStationIterator = namePosStationList.iterator();
+		return namePosStationIterator;
+	}
+	
+	/**
+	 * 
 	 * This method get all Hotel
 	 * 
 	 * @return an iterator with all the Hotel
@@ -39,24 +78,24 @@ public class JdbcPersistence  {
 	public Iterator<Hotel> getAllHotel(int comfort) {
 		int comfortLevel;
 		int priceLevel;
-		Position position = new Position(0,0);
 		String name;
 		ArrayList <Hotel> hotelList =  new ArrayList<Hotel>();
 		Iterator<Hotel> hotelIterator = null;
 		try {
 			
-			String selectHotelQuery = "SELECT nom, ST_X(t.position) as x_coordinate, ST_Y(t.myPointColumn) as y_coordinate "
+			String selectHotelQuery = "SELECT nom_hotel, ST_X(position) as x_coordinate, ST_Y(position) as y_coordinate "
 					+ ", prix, confort FROM hotel WHERE confort = ?";
 			
 			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectHotelQuery);
 			
-			//preparedStatement.setInt(1,comfort);
+			preparedStatement.setInt(1,comfort);
 			
 			ResultSet result = preparedStatement.executeQuery();
 	
 			
 			while (result.next()) {
-				name = result.getString("nom");
+				Position position = new Position(0,0);
+				name = result.getString("nom_hotel");
 				position.setX(result.getFloat("x_coordinate"));
 				position.setY(result.getFloat("y_coordinate"));
 				comfortLevel = result.getInt("confort");
@@ -82,54 +121,6 @@ public class JdbcPersistence  {
 		return hotelIterator;
 	}
 	
-	/**
-	 * 
-	 * Get all Tourist Attractions
-	 * 
-	 * @return an iterator with all the TouristAttractions
-	 * */
-	private Iterator<Site> allTouristAttractions() {
-		String name;
-		int price;
-		int effort;
-		String type;
-		Position position = new Position(0,0);
-		int duration;
-		ArrayList <Site> SiteList =  new ArrayList<Site>();
-		Iterator<Site> SiteIterator = null;
-		try {
-			
-			String selectTouristAttractionsQuery = "SELECT nom_site, type_lieux, niveau_effort, "
-					+ "duree_activite, prix,"
-					+ "ST_X(position_site) as x_coordinate, ST_Y(position_site) as y_coordinate"
-					+ " FROM site_touristique";
-			
-			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectTouristAttractionsQuery);
-			
-			ResultSet result = preparedStatement.executeQuery();
-					
-			while (result.next()) {
-				name = result.getString("nom_site");
-				position.setX(result.getFloat("x_coordinate"));
-				position.setY(result.getFloat("y_coordinate"));
-				type = result.getString("type_lieux");
-				effort = result.getInt("niveau_effort");
-				duration = result.getInt("duree_activite");
-				price = result.getInt("prix");
-				Site site = new Site(name,price,effort,type,position,duration);
-				SiteList.add(site);
-			}
-			
-			preparedStatement.close();
-			
-			
-		} catch (SQLException se) {
-			System.err.println(se.getMessage());
-		}
-		SiteIterator = SiteList.iterator();
-		return SiteIterator;
-	}
-
 	/**
 	 * This method compute the mean price of the luxurious hotel
 	 * 
@@ -278,7 +269,55 @@ public class JdbcPersistence  {
 	    return scoreIterator;
 	  }
 
-	
+	/**
+	 * 
+	 * Get all Tourist Attractions
+	 * 
+	 * @return an iterator with all the TouristAttractions
+	 * */
+	private Iterator<Site> allTouristAttractions() {
+		String id_site;
+		String name;
+		int price;
+		int effort;
+		String type;
+		int duration;
+		ArrayList <Site> SiteList =  new ArrayList<Site>();
+		Iterator<Site> SiteIterator = null;
+		try {
+			
+			String selectTouristAttractionsQuery = "SELECT id_site, nom_site, type_lieux, niveau_effort, "
+					+ "duree_activite, prix,"
+					+ "ST_X(position_site) as x_coordinate, ST_Y(position_site) as y_coordinate"
+					+ " FROM site_touristique";
+			
+			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectTouristAttractionsQuery);
+			
+			ResultSet result = preparedStatement.executeQuery();
+					
+			while (result.next()) {
+				Position position = new Position(0,0);
+				id_site = result.getString("id_site");
+				name = result.getString("nom_site");
+				position.setX(result.getDouble("x_coordinate"));
+				position.setY(result.getDouble("y_coordinate"));
+				type = result.getString("type_lieux");
+				effort = result.getInt("niveau_effort");
+				duration = result.getInt("duree_activite");
+				price = result.getInt("prix");
+				Site site = new Site(id_site,name,price,effort,type,position,duration);
+				SiteList.add(site);
+			}
+			
+			preparedStatement.close();
+			
+			
+		} catch (SQLException se) {
+			System.err.println(se.getMessage());
+		}
+		SiteIterator = SiteList.iterator();
+		return SiteIterator;
+	}
 	/**
 	 * 
 	 * Get all Tourist Attractions name

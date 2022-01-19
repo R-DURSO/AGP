@@ -1,6 +1,7 @@
 package business.data;
 
 public class Site {
+	private String id_site;
 	private String name;
 	private int price;
 	private int effort; // to define clearly
@@ -15,6 +16,7 @@ public class Site {
 	}
 	
 	public Site(String name) {
+		this.id_site = "";
 		this.name = name;
 		this.price = 0;
 		this.effort = 0;
@@ -22,7 +24,8 @@ public class Site {
 		this.pos = null;
 	}
 	
-	public Site(String name, int price, int effort, String type, Position pos, int duration) {
+	public Site(String id_site, String name, int price, int effort, String type, Position pos, int duration) {
+		this.id_site = id_site;
 		this.name = name;
 		this.price = price;
 		this.effort = effort;
@@ -77,6 +80,14 @@ public class Site {
 
 	public void setDuration(int duration) {
 		this.duration = duration;
+	}
+
+	public String getId_site() {
+		return id_site;
+	}
+
+	public void setId_site(String id_site) {
+		this.id_site = id_site;
 	}
 
 }
