@@ -1,4 +1,4 @@
-package core;
+package business.core;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,6 +22,7 @@ public class Journey {
 	private int frequency;
 	private int effort;
 	
+	// Appel à la bd
 	private Iterator<Hotel> hotelIterator;
 	private Iterator<Transport> transportIterator;
 	private Iterator<Site> siteIterator;
@@ -60,9 +61,9 @@ public class Journey {
 			excursion.setArrivalHotel(lastHotel);
 		}
 		
-		
+		// TODO liste de tous les sites si liste de sites prioritaires vide
 		for(Site site : siteList) {
-			if(site.getDuration() <= totalExcursionTime - excursionDuration && excursionPrice + site.getPrice() < budget) {
+			if(site.getDuration() <= excursionDuration - totalExcursionTime && excursionPrice + site.getPrice() < budget) {
 				excursion.addSite(site);
 				excursionPrice += site.getPrice();
 				visitedSites.add(site);

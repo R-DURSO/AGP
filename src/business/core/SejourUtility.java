@@ -1,4 +1,4 @@
-package core;
+package business.core;
 
 
 import java.util.List;
