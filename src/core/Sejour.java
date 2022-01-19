@@ -40,7 +40,7 @@ public class Sejour {
 	private int moneyRemaining = 0;
 	private int numberHotelNight = 7;
 	private int indexOfPriority = 0 ;
-	/**
+	/** plage dans les 7 excursion restante 
 	 * createJourney use 3 methode on this order
 	 * the findExucrsion will be use many time for create a list of excursion
 	 * selectday will fill the 7 doy the journey
@@ -123,14 +123,14 @@ public void creationWorkingTime(){
 		int i = 0 ;
 		if(effort  <=5) {
 			for(Day days : weekDays ) {
-					days.getExcursionList().add(listExcursions.get(i));
+					days.add(listExcursions.get(i));
 					i++;
 			}
 		}else {
 			for(Day days : weekDays ) {
-				days.getExcursionList().add(listExcursions.get(i));
+				days.add(listExcursions.get(i));
 				i++;
-				days.getExcursionList().add(listExcursions.get(i));
+				days.add(listExcursions.get(i));
 				i++;
 		}
 		}

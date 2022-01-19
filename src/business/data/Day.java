@@ -75,4 +75,7 @@ public class Day {
 			return "This day, you will have " + this.excursionList.size() + " excursions";
 		}
 	}
+	public void add(Excursion list) {
+		excursionList.add(list);
+	}
 }
