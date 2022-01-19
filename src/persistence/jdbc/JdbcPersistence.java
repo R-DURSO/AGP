@@ -99,21 +99,23 @@ public class JdbcPersistence  {
 		Iterator<Site> SiteIterator = null;
 		try {
 			
-			String selectTouristAttractionsQuery = "SELECT * FROM site_touristique";
+			String selectTouristAttractionsQuery = "SELECT nom_site, type_lieux, niveau_effort, "
+					+ "duree_activite, prix,"
+					+ "ST_X(position_site) as x_coordinate, ST_Y(position_site) as y_coordinate"
+					+ " FROM site_touristique";
 			
 			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectTouristAttractionsQuery);
 			
 			ResultSet result = preparedStatement.executeQuery();
-			
-			name = result.getString("nom_site");
-			position.setX(result.getFloat("x_coordinate"));
-			position.setY(result.getFloat("y_coordinate"));
-			type = result.getString("type_lieux");
-			effort = result.getInt("niveau_effort");
-			duration = result.getInt("duree_activitee");
-			price = result.getInt("prix");
-			
+					
 			while (result.next()) {
+				name = result.getString("nom_site");
+				position.setX(result.getFloat("x_coordinate"));
+				position.setY(result.getFloat("y_coordinate"));
+				type = result.getString("type_lieux");
+				effort = result.getInt("niveau_effort");
+				duration = result.getInt("duree_activite");
+				price = result.getInt("prix");
 				Site site = new Site(name,price,effort,type,position,duration);
 				SiteList.add(site);
 			}
@@ -134,24 +136,18 @@ public class JdbcPersistence  {
 	 * @return mean of the price of the luxurious hotel
 	 * @throws SQLException
 	 */
-	public int luxuriousHotelMean() throws SQLException {
-		int meanHotelPrice = 0;
+	public float luxuriousHotelMean() throws SQLException {
+		float meanHotelPrice = 0;
+		String selectluxuriousHotelMeanQuery = "SELECT AVG(prix) FROM hotel WHERE prix >= 150 ";
 		try {
-			
-			String selectluxuriousHotelMeanQuery = "SELECT AVG(prix) FROM hotel WHERE prix >= 150 ";
-			
 			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectluxuriousHotelMeanQuery);
-			
 			ResultSet result = preparedStatement.executeQuery();
-			
-			meanHotelPrice = result.getInt(1);
-			
+			result.next();
+			meanHotelPrice = result.getFloat(1);
 			preparedStatement.close();
 			
-			
 		} catch (SQLException se) {
-			System.err.println(se.getMessage());
-			System.out.println("test");
+			System.err.println("le message d'erreur est : "+se.getMessage());
 		}
 		return meanHotelPrice;
 	}
