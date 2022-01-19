@@ -2,6 +2,8 @@ package business.data;
 
 import java.util.List;
 
+import org.primefaces.expression.impl.ThisExpressionResolver;
+
 public class Excursion {
 	//TODO:see that with team
 	private int price;  //might be modified, need to talk about it
@@ -107,13 +109,21 @@ public class Excursion {
 		}
 		return result;
 	}
+	public String getTraportName() {
+		String result = "";
+		for(Transport transport : transportList) {
+			result += transport.getComfortLevel();
+			result += " ";
+		}
+		return result;
+	}
 	
 	@Override
 	public String toString() {
 		this.updateComfortLevel();
 		this.updatePrice();
 		return "Excursion [price=" + price + ", comfortLevel=" + comfortLevel + ", sites visités: " + this.getSiteName()
-				+ ", departureHotel=" + departureHotel.getName() + ",arrivalHotel=" + arrivalHotel.getName() + ", transportList=" + transportList.get(0) + "]";
+				+ ", departureHotel=" + departureHotel.getName() + ",arrivalHotel=" + arrivalHotel.getName() + ", transportList=" + this.getTraportName() + "]";
 	}
 	
 	

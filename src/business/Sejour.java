@@ -30,7 +30,6 @@ public class Sejour {
 	private int moneyRemaining = 0;
 	private int numberHotelNight = 7;
 	private int indexOfPriority = 0 ;
-	
 	public void Sejour() {
 
 	};
@@ -48,7 +47,7 @@ public class Sejour {
 		return journey;
 	}
 	/** 
-	 * createJourney use 3 methode on this order
+	 * 
 	 * the findExucrsion will be use many time for create a list of excursion
 	 * selectday will fill the 7 doy the journey
 	 * create journey will storing on the week
