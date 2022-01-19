@@ -9,27 +9,23 @@ public class Excursion {
 	
 	
 	private List<Site> siteList;
-	private List<Hotel> hotelList;
+	private Hotel departureHotel;
+	private Hotel arrivalHotel;
 	private List<Transport> transportList; //may be use a hashmap to have a specific transport for every site
 	
 	public Excursion() {
 		
 	}
 	
-	public Excursion(int price, int comfortLevel, List<Site> siteList, List<Hotel> hotelList,
+	public Excursion(int price, int comfortLevel, List<Site> siteList, Hotel departureHotel, Hotel arrivalHotel,
 			List<Transport> transportList) {
 		super();
 		this.price = price;
 		this.comfortLevel = comfortLevel;
 		this.siteList = siteList;
-		this.hotelList = hotelList;
+		this.departureHotel = departureHotel;
+		this.arrivalHotel = arrivalHotel;
 		this.transportList = transportList;
-	}
-
-
-
-	public void addHotel(Hotel hotel) {
-		this.hotelList.add(hotel);
 	}
 	
 	public void addTransport(Transport transport) {
@@ -46,12 +42,23 @@ public class Excursion {
 	public void setSiteList(List<Site> siteList) {
 		this.siteList = siteList;
 	}
-	public List<Hotel> getHotelList() {
-		return hotelList;
+
+	public Hotel getDepartureHotel() {
+		return departureHotel;
 	}
-	public void setHotelList(List<Hotel> hotelList) {
-		this.hotelList = hotelList;
+
+	public void setDepartureHotel(Hotel departureHotel) {
+		this.departureHotel = departureHotel;
 	}
+
+	public Hotel getArrivalHotel() {
+		return arrivalHotel;
+	}
+
+	public void setArrivalHotel(Hotel arrivalHotel) {
+		this.arrivalHotel = arrivalHotel;
+	}
+
 	public List<Transport> getTransportList() {
 		return transportList;
 	}
@@ -74,9 +81,8 @@ public class Excursion {
 	
 	public void updatePrice() {
 		int sum =0;
-		for (Hotel hotel : hotelList) {
-			sum+=hotel.getPriceLevel();
-		}
+		sum += departureHotel.getPriceLevel();
+		sum += arrivalHotel.getPriceLevel();
 		for (Transport transport : transportList) {
 			sum+=transport.getPrice();
 		}
@@ -85,9 +91,8 @@ public class Excursion {
 	
 	public void updateComfortLevel() {
 		int sum =0;
-		for (Hotel hotel : hotelList) {
-			sum+=hotel.getComfortLevel();
-		}
+		sum += departureHotel.getComfortLevel();
+		sum += arrivalHotel.getComfortLevel();
 		for (Transport transport : transportList) {
 			sum+=transport.getComfortLevel();
 		}
@@ -108,7 +113,7 @@ public class Excursion {
 		this.updateComfortLevel();
 		this.updatePrice();
 		return "Excursion [price=" + price + ", comfortLevel=" + comfortLevel + ", sites visités: " + this.getSiteName()
-				+ ", hotelList=" + hotelList + ", transportList=" + transportList + "]";
+				+ ", departureHotel=" + departureHotel + ",arrivalHotel=" + arrivalHotel + ", transportList=" + transportList + "]";
 	}
 	
 	
