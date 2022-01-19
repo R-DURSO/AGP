@@ -1,7 +1,8 @@
-package core;
+package business;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.aspectj.weaver.ast.And;
 
@@ -10,24 +11,13 @@ import business.data.Excursion;
 import business.data.Hotel;
 import business.data.SejourCritere;
 import business.data.Site;
-import business.data.Transport;
 import business.data.Visit;
+import persistence.jdbc.JdbcPersistence;
 
 public class Sejour {
-	public void Sejour() {
-
-	};
-
-	public List<ArrayList<Day>> getJourney() {
-		return journey;
-	}
-
-	public void setJourney(List<ArrayList<Day>> journey) {
-		this.journey = journey;
-	}
-
 	private List<ArrayList<Day>> journey = new ArrayList<ArrayList<Day>>();
 	private SejourCritere criterion;
+	private JdbcPersistence query; 
 	private int journeyLong = 7;
 
 	private List<Visit> visit = new ArrayList<Visit>();
@@ -40,7 +30,24 @@ public class Sejour {
 	private int moneyRemaining = 0;
 	private int numberHotelNight = 7;
 	private int indexOfPriority = 0 ;
-	/** plage dans les 7 excursion restante 
+	
+	public void Sejour() {
+
+	};
+
+	public List<ArrayList<Day>> getJourney() {
+		return journey;
+	}
+
+	public void setJourney(List<ArrayList<Day>> journey) {
+		this.journey = journey;
+	}
+
+	public List<ArrayList<Day>> createOffreJourney(){
+		createJourney();
+		return journey;
+	}
+	/** 
 	 * createJourney use 3 methode on this order
 	 * the findExucrsion will be use many time for create a list of excursion
 	 * selectday will fill the 7 doy the journey
@@ -63,6 +70,9 @@ public class Sejour {
 				} else {
 					listExcursions.add(findExcursion(sites));
 				}
+			}
+			for (int r = listExcursions.size(); r<15 ; r++) {
+				listExcursions.add(new Excursion(0,lasHotel.getComfortLevel(),null,lasHotel,lasHotel,null));
 			}
 		} else {
 			while (listExcursions.size() < 14 && moneyRemaining != 0) {
@@ -102,17 +112,16 @@ public class Sejour {
 			}
 			if (duration <= 0 || effort <= 0) {
 				if (lasHotel != null) {
-					lasHotel = bestExcursion.getHotelList().get(newactivity);
+					lasHotel = bestExcursion.getArrivalHotel();
 					return bestExcursion;
 				} else {
-					lasHotel = bestExcursion.getHotelList().get(newactivity - 1);
+					lasHotel = bestExcursion.getDepartureHotel();
 					return bestExcursion;
 				}
 
 			}
 		}
-		bestExcursion.addHotel(lasHotel);
-		bestExcursion.addSite(null);
+		bestExcursion = new Excursion(0,lasHotel.getComfortLevel(),null,lasHotel,lasHotel,null) ;
 		return bestExcursion; 
 	}
 	/**
@@ -124,14 +133,16 @@ public void creationWorkingTime(){
 		if(effort  <=5) {
 			for(Day days : weekDays ) {
 					days.add(listExcursions.get(i));
-					i++;
+					listExcursions.remove(i);
 			}
 		}else {
 			for(Day days : weekDays ) {
+				i = Math.subtractExact(0, listExcursions.size());
 				days.add(listExcursions.get(i));
-				i++;
+				listExcursions.remove(i);
+				i = Math.subtractExact(0, listExcursions.size());
 				days.add(listExcursions.get(i));
-				i++;
+				listExcursions.remove(i);
 		}
 		}
 	}

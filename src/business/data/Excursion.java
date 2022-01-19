@@ -113,7 +113,7 @@ public class Excursion {
 		this.updateComfortLevel();
 		this.updatePrice();
 		return "Excursion [price=" + price + ", comfortLevel=" + comfortLevel + ", sites visités: " + this.getSiteName()
-				+ ", departureHotel=" + departureHotel + ",arrivalHotel=" + arrivalHotel + ", transportList=" + transportList + "]";
+				+ ", departureHotel=" + departureHotel.getName() + ",arrivalHotel=" + arrivalHotel.getName() + ", transportList=" + transportList.get(0) + "]";
 	}
 	
 	
