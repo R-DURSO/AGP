@@ -61,11 +61,11 @@ public class JdbcPersistence  {
 				price = result.getInt("prix");
 				speed = result.getInt("vitesse");
 				if(price == 15 && comfortLevel == 3) {
-					Transport bus = new Bus(speed);
+					Transport bus = new Bus(price,comfortLevel,speed);
 					transportList.add(bus);
 				}
 				else {
-					Transport boat = new Boat(speed);
+					Transport boat = new Boat(price,comfortLevel,speed);
 					transportList.add(boat);
 				}
 
@@ -269,7 +269,6 @@ public class JdbcPersistence  {
 				String[] words = docName.split("\\.");
 				String id_site = words[0];
 				if(site.getId_site().equals(id_site)) {
-					//on range dans iterator final
 					SiteScore siteScore = new SiteScore(site.getName(),site.getPrice(),site.getEffort()
 							,site.getType(),site.getPos()
 							,site.getDuration(),scoreDocName.getScore());
