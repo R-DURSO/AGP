@@ -1,5 +1,7 @@
 package persistence.jdbc;
 
+import java.util.Comparator;
+
 import business.data.Position;
 
 public class SiteScore {
@@ -19,6 +21,17 @@ public class SiteScore {
 		this.setDuration(duration);
 		this.score = score;
 	}
+	
+    public static Comparator<SiteScore> scoreComparator = new Comparator<SiteScore>() {
+
+	public int compare(SiteScore s1, SiteScore s2) {
+
+	   float score1 = s1.getScore();
+	   float score2 = s2.getScore();
+
+	   return Float.compare(score2,score1);
+   }};
+   
 	public String getName() {
 		return name;
 	}

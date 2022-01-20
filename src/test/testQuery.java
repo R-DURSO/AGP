@@ -11,10 +11,12 @@ import business.data.Hotel;
 import business.data.Site;
 import persistence.jdbc.JdbcPersistence;
 import persistence.jdbc.NamePosStation;
+import persistence.jdbc.SiteScore;
 
 public class testQuery {
 	public static void main(String[] args) throws IOException, ParseException, SQLException{
 		JdbcPersistence persistence = new JdbcPersistence();
+		/*
 		float goodHotelPrice = persistence.luxuriousHotelMean();
 		System.out.println("prix moyen hotel de luxe : "+goodHotelPrice);
 		Iterator<Hotel> hotelIterator = persistence.getAllHotel(3);
@@ -24,6 +26,7 @@ public class testQuery {
 					+ "prix de l'hotel "+hotel.getPriceLevel() +" position x :"+hotel.getPosition().getX()
 					+" position y : "+hotel.getPosition().getY());
 		}
+		*/
 		/*
 		String selectTouristAttractionsQuery = "SELECT id_site, nom_site, type_lieux, niveau_effort, "
 				+ "duree_activite, prix,"
@@ -37,12 +40,21 @@ public class testQuery {
 					+" position y : "+site.getPos().getY());
 		}
 		*/
+		/*
 		Iterator<NamePosStation> namePosStationIterator = persistence.getStation();
 		while(namePosStationIterator.hasNext()) {
 			NamePosStation namePosStation = namePosStationIterator.next();
 			System.out.println("\nNom de la Station "+namePosStation.getName()+" "
 					+" position x :"+namePosStation.getPosition().getX()
 					+" position y : "+namePosStation.getPosition().getY());
+		}
+		*/
+		Iterator<SiteScore> siteScoreList = persistence.getTouristAttractionWithKeyWord("Cascades", "rivière");
+		while(siteScoreList.hasNext()) {
+			SiteScore siteScore = siteScoreList.next();
+			System.out.println("\nscore du site : "+siteScore.getScore()+ " Nom du site "+siteScore.getName()+" "
+					+ "prix du site "+siteScore.getPrice() +" position x :"+siteScore.getPos().getX()
+					+" position y : "+siteScore.getPos().getY());
 		}
 		
 	}

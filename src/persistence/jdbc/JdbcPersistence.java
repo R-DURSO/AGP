@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.io.*;
 import java.nio.file.*;
@@ -17,12 +18,15 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.*;
 
+import business.data.Boat;
+import business.data.Bus;
 import business.data.CheapHotel;
 import business.data.Hotel;
 import business.data.LuxuryHotel;
 import business.data.MediumHotel;
 import business.data.Position;
 import business.data.Site;
+import business.data.Transport;
 
 public class JdbcPersistence  {
 	
@@ -30,6 +34,51 @@ public class JdbcPersistence  {
 		System.err.println("Please don't forget to create tables manually by importing script.sql in your database !");
 	}
 	
+	/**
+	 * 
+	 * This method get all mean of transport
+	 * 
+	 * @return an iterator with all mean of transport
+	 */
+	public Iterator<Transport> getAllMeanOfTransport(){
+		int price;
+		int comfortLevel;
+		int speed;
+		ArrayList <Transport> transportList =  new ArrayList<Transport>();
+		Iterator<Transport> transportIterator = null;
+		try {
+			
+			String selectTransportQuery = "SELECT prix,"
+					+ "confort,vitesse FROM transport";
+			
+			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectTransportQuery);
+						
+			ResultSet result = preparedStatement.executeQuery();
+	
+			while (result.next()) {
+				
+				comfortLevel = result.getInt("confort");
+				price = result.getInt("prix");
+				speed = result.getInt("vitesse");
+				if(price == 15 && comfortLevel == 3) {
+					Transport bus = new Bus(speed);
+					transportList.add(bus);
+				}
+				else {
+					Transport boat = new Boat(speed);
+					transportList.add(boat);
+				}
+
+			}
+			preparedStatement.close();
+			
+			
+		} catch (SQLException se) {
+			System.err.println(se.getMessage());
+		}
+		transportIterator = transportList.iterator();
+		return transportIterator;
+	}
 	/**
 	 * 
 	 * This method get all Station and their position
@@ -211,15 +260,15 @@ public class JdbcPersistence  {
 				+ " FROM site_touristique ";
 		ArrayList <SiteScore> siteScoreList =  new ArrayList<SiteScore>();
 		Iterator<Site> siteIteratorSQL = allTouristAttractions(SQLQuery);
-		Iterator<ScoreDocName> scoreIteratorTextual = luceneSearch (keyWord1,keyWord2);
 		while(siteIteratorSQL.hasNext()) {
 			Site site = siteIteratorSQL.next();
+			Iterator<ScoreDocName> scoreIteratorTextual = luceneSearch (keyWord1,keyWord2);
 			while(scoreIteratorTextual.hasNext()) {
 				ScoreDocName scoreDocName = scoreIteratorTextual.next();
 				String docName = scoreDocName.getDocName();
-				String[] words = docName.split(".");
+				String[] words = docName.split("\\.");
 				String id_site = words[0];
-				if(site.getId_site() == id_site) {
+				if(site.getId_site().equals(id_site)) {
 					//on range dans iterator final
 					SiteScore siteScore = new SiteScore(site.getName(),site.getPrice(),site.getEffort()
 							,site.getType(),site.getPos()
@@ -229,37 +278,32 @@ public class JdbcPersistence  {
 			}
 		}
 		Iterator<SiteScore> siteScoreIterator = siteScoreList.iterator();
+		siteScoreIterator = sortDescOrder(siteScoreIterator);
 		return siteScoreIterator;
 		
 		
 	}
 	/**
 	 * 
-	 * Get all Tourist Attractions
+	 * Search with two keyword in the tourist attraction description file
 	 * 
-	 * @return an iterator with all the Hotel
+	 * @return an iterator the score and the name of the doc (in descending order)
 	 * */
 	private Iterator<ScoreDocName> luceneSearch (String keyWord1,String keyWord2) throws IOException, ParseException {
-		int MAX_RESULTS = 100; //nombre max de réponses retournées
+		int MAX_RESULTS = 100;
 		ArrayList <ScoreDocName> scoreList = new ArrayList<ScoreDocName>();
 		Iterator<ScoreDocName> scoreIterator = null;
 		Iterator <String> iteratorIdList = getAllTouristAttractionsId();
 
 	    Analyzer analyseur = new StandardAnalyzer();
 
-	    // 2. Creation de l'index
-        //Directory index = new RAMDirectory();  //création index en mémoire
-	    Path indexpath = FileSystems.getDefault().getPath("src\\persistence\\jdbc\\site\\index"); //localisation index
-	    Directory index = FSDirectory.open(indexpath);  //création index sur disque
+	    Path indexpath = FileSystems.getDefault().getPath("src\\persistence\\jdbc\\site\\index");
+	    Directory index = FSDirectory.open(indexpath);
 	    IndexWriterConfig config = new IndexWriterConfig(analyseur);
 	    IndexWriter w = new IndexWriter(index, config);
 	    
-	    
-	    // 3. Indexation des documents
-	    //    Ici on indexe seulement un fichier
 	    while(iteratorIdList.hasNext()) {
 	    	String fileName = iteratorIdList.next()+".txt";
-	    	//System.out.println("nom du fichier : "+fileName);
 		    File f = new File("src\\persistence\\jdbc\\site\\"+fileName);
 	   		Document doc = new Document();
 	   		doc.add(new Field("nom", f.getName(), TextField.TYPE_STORED));
@@ -268,28 +312,21 @@ public class JdbcPersistence  {
 	    }		
    		w.close();
 
-    	// 4. Interroger l'index
 	    DirectoryReader ireader = DirectoryReader.open(index);
-	    IndexSearcher searcher = new IndexSearcher(ireader); //l'objet qui fait la recherche dans l'index
+	    IndexSearcher searcher = new IndexSearcher(ireader);
 	    String reqstr = keyWord1 + " " + keyWord2;
 	    	
-	    //Parsing de la requete en un objet Query
-	    //  "contenu" est le champ interrogé par defaut si aucun champ n'est precisé
 	    QueryParser qp = new QueryParser("contenu", analyseur); 
 	    Query req = qp.parse(reqstr);
 
-	    TopDocs resultats = searcher.search(req, MAX_RESULTS); //recherche
+	    TopDocs resultats = searcher.search(req, MAX_RESULTS); 
 
-	    // 6. Affichage resultats
-	    System.out.println(resultats.totalHits + " documents correspondent");
 	    for(int i=0; i<resultats.scoreDocs.length; i++) {
 	    	int docId = resultats.scoreDocs[i].doc;
 	    	Document d = searcher.doc(docId);
 	    	ScoreDocName scoreDocName = new ScoreDocName(d.get("nom"),resultats.scoreDocs[i].score);
 	    	scoreList.add(scoreDocName);
-	    	System.out.println(d.get("nom") + ": score " + resultats.scoreDocs[i].score);
 	    }
-	    // fermeture seulement quand il n'y a plus besoin d'acceder aux resultats
 	    
 	    scoreIterator= scoreList.iterator(); 
 	    
@@ -416,6 +453,21 @@ public class JdbcPersistence  {
 		}
 		Iterator <String> iteratorIdList = idList.iterator();
 		return iteratorIdList;
+	}
+	
+	/**
+	 * 
+	 * @param siteScoreIterator is the iterator to sort
+	 * @return an iterator of SiteScore, sort by descending order
+	 */
+	private Iterator<SiteScore> sortDescOrder(Iterator<SiteScore> siteScoreIterator){
+		ArrayList <SiteScore> sortScoreList = new ArrayList<SiteScore>();
+	      while (siteScoreIterator.hasNext()) {
+	    	  sortScoreList.add(siteScoreIterator.next());
+	      }
+	      	
+	      Collections.sort(sortScoreList, SiteScore.scoreComparator);
+	      return sortScoreList.iterator();
 	}
 }
 
