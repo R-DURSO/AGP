@@ -12,10 +12,14 @@ import business.data.Site;
  */
 public class JourneyUtility {
 	
+	public static int getRandomNumber(int min, int max) {
+		return (int) (Math.random() * (max + 1 - min)) + min;
+	}
+	
 	public static Hotel getClosestHotel(List<Hotel> hotelList, Site site) {
 		Hotel closest = hotelList.get(0);
 		for(Hotel hotel : hotelList) {
-			if(distance(site.getPos(), hotel.getPosition()) < distance(site.getPos(), closest.getPosition())) {
+			if(distance(site.getPosition(), hotel.getPosition()) < distance(site.getPosition(), closest.getPosition())) {
 				closest = hotel;
 			}
 		}

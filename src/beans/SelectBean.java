@@ -24,9 +24,9 @@ public class SelectBean {
 	 */
 	private JourneyCritere entry = new JourneyCritere();
     //private String[] selectedOptions;
-	private Journey holliday = new Journey();
+	private Journey journey = new Journey();
     private List<Integer> scale;
-//
+
 	public SelectBean() {
 	}
 	
@@ -39,8 +39,7 @@ public class SelectBean {
 	}
 	
 	public String findSejour() {
-		holliday.setCritere(entry);
-		holliday.createJourney();
+		journey.init(entry);
 		return "result";
 	}
 
@@ -110,6 +109,6 @@ public class SelectBean {
 		this.scale = scale;
 	}
 	public Journey getJourney() {
-		return holliday;
+		return journey;
 	}
 }

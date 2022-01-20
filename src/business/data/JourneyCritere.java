@@ -14,15 +14,6 @@ public class JourneyCritere {
     private String keyWord;
     private int frequency ;
     private int effortLevel ;
-    
-
-	public int getConfortChoice() {
-		return confortChoice;
-	}
-
-	public void setConfortChoice(int confortChoice) {
-		this.confortChoice = confortChoice;
-	}
 
 	public JourneyCritere() {
     }
@@ -31,11 +22,20 @@ public class JourneyCritere {
             int duration, String keyWord, int frequency,
             int effortLevel) {
     	this.confortChoice = confortChoice;
+    	this.price = price;
     	this.duration = duration;
     	this.effortLevel = effortLevel;
     	this.keyWord = keyWord;
     	this.frequency = frequency;
     }
+    
+    public int getConfortChoice() {
+		return confortChoice;
+	}
+
+	public void setConfortChoice(int confortChoice) {
+		this.confortChoice = confortChoice;
+	}
 
 	public int getPrice() {
 		return price;

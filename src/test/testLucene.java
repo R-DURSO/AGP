@@ -10,7 +10,6 @@ import persistence.jdbc.ScoreDocName;
 
 public class testLucene {
 	public static void main(String[] args) throws IOException, ParseException {
-	/*	
 		JdbcPersistence persistence = new JdbcPersistence();
 		Iterator<ScoreDocName> scoreIterator = null;
 		ScoreDocName scoreDocName = null;
@@ -20,6 +19,6 @@ public class testLucene {
 			System.out.println("Nom du document "+scoreDocName.getDocName()+" "
 					+ "score de pertinence "+scoreDocName.getScore());
 		}
-		*/
+		
 	}
 }

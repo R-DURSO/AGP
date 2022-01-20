@@ -52,9 +52,9 @@ public class testQuery {
 		Iterator<SiteScore> siteScoreList = persistence.getTouristAttractionWithKeyWord("Cascades", "rivière");
 		while(siteScoreList.hasNext()) {
 			SiteScore siteScore = siteScoreList.next();
-			System.out.println("\nscore du site : "+siteScore.getScore()+ " Nom du site "+siteScore.getName()+" "
-					+ "prix du site "+siteScore.getPrice() +" position x :"+siteScore.getPos().getX()
-					+" position y : "+siteScore.getPos().getY());
+			System.out.println("score du site : "+siteScore.getScore()+ " Nom du site "+siteScore.getName()+" "
+					+ "prix du site "+siteScore.getPrice() +" position x :"+siteScore.getPosition().getX()
+					+" position y : "+siteScore.getPosition().getY());
 		}
 		
 	}

@@ -28,27 +28,28 @@ public class Journey {
 	
 	// journeyDuration -> half-day
 	private int journeyDuration = 14;
-	private int excursionPrice = 0;
-	private int budget ;
-	private int confort ;
-	private int frequency ;
-	private int effort ;
+	private int journeyPrice = 0;
+	private int budget;
+	private int confort;
+	private int frequency;
+	private int effort;
+	private String keyWord;
 	
-	// Appel à la bd
-	private Iterator<Hotel> hotelIterator ;
-	private Iterator<Transport> transportIterator ;
-	private Iterator<Site> siteIterator = persistence.allTouristAttractions();
+	// Iterators
+	private Iterator<Hotel> hotelIterator;
+	private Iterator<Transport> transportIterator;
+	private Iterator<SiteScore> siteIterator;	
+	private Iterator<Site> otherSiteIterator;
 	
-	private Iterator<SiteScore> otherSiteIterator = null;
-	
+	// Lists
 	// Contains hotels corresponding to the user's preferences
-	private List<Hotel> hotelList = new ArrayList<>();
+	private List<Hotel> hotels;
 	// Contains sites corresponding to the user's preferences
-	private List<Site> siteList = new ArrayList<>();
+	private List<Site> sites;
 	// Contains sites that DOES NOT correspond to the user's preferences
-	private List<Site> otherSiteList = new ArrayList<>();
-	// contains the different day of the journey week 
-	private List<Day> weekDay = new ArrayList<Day>();
+	private List<Site> otherSites;
+	// Contains the different day of the journey week 
+	private List<Day> days;
 	
 	public Journey(JourneyCritere critere) {
 		this.critere = critere;
@@ -58,48 +59,113 @@ public class Journey {
 		this.effort = critere.getEffortLevel();
 	}
 	public Journey() {
+	}
+	
+	public void init(JourneyCritere critere) {
+		this.critere = critere;
+		this.budget = critere.getPrice();
+		this.confort = critere.getConfortChoice();
+		this.frequency = critere.getFrequency();
+		this.effort = critere.getEffortLevel();
+		this.keyWord = critere.getKeyWord();
+		System.out.println("************ Critere ************");
+		System.out.println(critere.getPrice());
+		System.out.println(critere.getConfortChoice());
+		System.out.println(critere.getFrequency());
+		System.out.println(critere.getEffortLevel());
+		System.out.println(critere.getKeyWord());
 		
+		String[] words = keyWord.split(" ");
+		System.out.println("Words = " + words[0] + "|" + words[1]);
+		
+		siteIterator = persistence.getTouristAttractionWithKeyWord(words[0], words[1]);
+		otherSiteIterator = persistence.allTouristAttractions();
+		hotelIterator = persistence.getAllHotel(confort);
+		hotels = new ArrayList<>();
+		sites = new ArrayList<>();
+		otherSites = new ArrayList<>();
+		days = new ArrayList<>();
+		
+		hotelIterator.forEachRemaining(hotels::add);
+		siteIterator.forEachRemaining(sites::add);
+		otherSiteIterator.forEachRemaining(otherSites::add);
+		
+//		System.out.println("==========  Hotels ================");
+//		for(Hotel hotel : hotels) {
+//			System.out.println(hotel.getName());
+//		}
+//		
+		System.out.println("==========  Sites ================");
+		for(Site site : sites) {
+			System.out.println(site.getName());
+		}
+
+		System.out.println("==========  Other Sites ================");
+		for(Site site : otherSites) {
+			System.out.println(site.getName());
+		}
+		
+		System.out.println("==================================");
+		
+		createJourney();
 	}
 
 	public void createJourney() {
-		hotelIterator = persistence.getAllHotel(confort);
-		hotelIterator.forEachRemaining(hotelList::add);
-		siteIterator.forEachRemaining(siteList::add);	
-		/**String[] keyWord = critere.getKeyWord().split("\\s");
-		try {
-			otherSiteIterator = persistence.getTouristAttractionWithKeyWord(keyWord[0], keyWord[1]);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// TODO  a relier dès que la requête et faites 
-		// Creation of otherSiteList from the iterator
-		while(otherSiteIterator.hasNext()) {
-			SiteScore site = otherSiteIterator.next();
-			Site prioritySite = new Site(site.getName(),site.getPrice(),site.getEffort(),site.getType(),site.getPos(), site.getDuration());
-			if(!siteList.contains(prioritySite)) {
-				otherSiteList.add(prioritySite);
-			}
-		}**/
 		// on réparti les excursion de facon aléatoire 
-		Collections.shuffle(otherSiteList);
+		Collections.shuffle(otherSites);
 		
 		// Collections.shuffle(siteList);
 		
+		// Create excursions with visits
 		List<Excursion> excursions = new ArrayList<Excursion>();
 		// 0 < frequency/10 < 1 
-		double freq = 5 / 10.0;
-		int nbExcursions =    (int) (freq* journeyDuration);
+		double frequencyFactor = (double) frequency / 10;
+		int nbExcursions = (int) Math.round(frequencyFactor * journeyDuration);
+//		double freq = 5 / 10.0;
+//		int nbExcursions =    (int) (freq* journeyDuration);
 		for(int i = 0; i < nbExcursions; i++) {
 			excursions.add(createExcursion());
-
+			System.out.println("++++++++++++++++++++++++++++++++++++");
 		}
+		System.out.println("========= Create =========");
+		for(Excursion excursion : excursions) {
+			System.out.println(excursion);
+		}
+		
+		// Create the remaining empty excursions to complete the journey
+		int nbEmptyExcursions = journeyDuration - excursions.size();
+		for (int i = 0; i < nbEmptyExcursions; i++) {
+            excursions.add(new Excursion());
+        }
+		System.out.println("========= Empty =========");
+		for(Excursion excursion : excursions) {
+			System.out.println(excursion);
+		}
+		
+		// Distribute the excursions and empty excursions "randomly"
 		excursions = excursionDistribution(excursions);
-		System.out.println("nb ex : "+excursions.size());
-		weekDay = createWeek(excursions);
+		System.out.println("========= Distribution =========");
+		for(Excursion excursion : excursions) {
+			System.out.println(excursion);
+		}
+		
+		// Add hotels
+		linkHotels(excursions);
+		
+		// Add transports
+		linkTransports(excursions);
+		
+		System.out.println("========= Fin =========");
+		for(Excursion excursion : excursions) {
+			System.out.println(excursion);
+		}
+		System.out.println("===================================");
+		
+		journey = excursions;
+		
+		days = createWeek(excursions);
+		
+		System.out.println("Price = " + journeyPrice);
 	}
 		
 	public Excursion createExcursion() {
@@ -107,48 +173,38 @@ public class Journey {
 		int totalExcursionTime = 0;
 		List<Site> visitedSites = new ArrayList<>();
 		
-		if(journey.isEmpty()) {
-			Site site = siteList.remove(0);
-			excursion.addSite(site);
-			excursionPrice += site.getPrice();
-			totalExcursionTime += site.getDuration();
-			excursion.setDepartureHotel(JourneyUtility.getClosestHotel(hotelList, site));
-		} else {
-			Hotel lastHotel = journey.get(journey.size() - 1).getArrivalHotel();
-			excursion.setArrivalHotel(lastHotel);
-		}
-		
-		// TODO liste de tous les sites si liste de sites prioritaires vide
-		if(!siteList.isEmpty()) {
-			for(Site site : siteList) {
-				if(totalExcursionTime + site.getDuration() <= EXCURSION_DURATION && excursionPrice + site.getPrice() <= budget) {
+		if(!sites.isEmpty()) {
+			for(Site site : sites) {
+				System.out.println("Site: " + site.getName() + " " + site.getPrice() + " " + site.getDuration());
+				if(totalExcursionTime + site.getDuration() <= EXCURSION_DURATION && journeyPrice + site.getPrice() <= budget) {
 					excursion.addSite(site);
-					excursionPrice += site.getPrice();
+					journeyPrice += site.getPrice();
+					totalExcursionTime += site.getDuration();
 					visitedSites.add(site);
+					System.out.println("added");
 				}
+				System.out.println("");
 			}
 		}
 		
 		// Complete the excursion with other sites if there is still some time left
-		for(Site site : otherSiteList) {
-			if(totalExcursionTime + site.getDuration() <= EXCURSION_DURATION && excursionPrice + site.getPrice() <= budget) {
+		for(Site site : otherSites) {
+			System.out.println("other");
+			if(totalExcursionTime + site.getDuration() <= EXCURSION_DURATION && journeyPrice + site.getPrice() <= budget) {
 				excursion.addSite(site);
-				excursionPrice += site.getPrice();
+				journeyPrice += site.getPrice();
+				totalExcursionTime += site.getDuration();
 				visitedSites.add(site);
 			}
 		}
 		
 		// Delete visited sites
 		for(Site site : visitedSites) {
-			siteList.remove(site);
+			sites.remove(site);
 		}
 		for(Site site : visitedSites) {
-			otherSiteList.remove(site);
+			otherSites.remove(site);
 		}
-		
-		int nbSites = excursion.getSiteList().size();
-		Site lastSite = excursion.getSiteList().get(nbSites - 1);
-		excursion.setArrivalHotel(JourneyUtility.getClosestHotel(hotelList, lastSite));
 		
 		// closest station from departure
 		// closest station from sites
@@ -163,12 +219,45 @@ public class Journey {
 		}
 	}
 	
+	// Set departure and arrival hotels for each excursion
+	public void linkHotels(List<Excursion> excursions) {
+		for(int i = 0; i < excursions.size(); i++) {
+			if(i == 0) {
+				Excursion firstExcursion = excursions.get(0);
+				List<Site> l = firstExcursion.getSiteList();
+				if(!l.isEmpty()) {
+					Site firstSite = l.get(0);
+					Hotel firstHotel = JourneyUtility.getClosestHotel(hotels, firstSite);
+					firstExcursion.setDepartureHotel(firstHotel);
+					
+					Site lastSite = l.get(l.size()-1);
+					Hotel lastHotel = JourneyUtility.getClosestHotel(hotels, lastSite);
+					firstExcursion.setArrivalHotel(lastHotel);
+				} else {
+					Hotel hotel = hotels.get(JourneyUtility.getRandomNumber(0, hotels.size()-1));
+					firstExcursion.setDepartureHotel(hotel);
+					firstExcursion.setArrivalHotel(hotel);
+				}
+			} else {
+				Excursion excursion = excursions.get(i);
+				Excursion lastExcursion = excursions.get(i-1);
+				excursion.setDepartureHotel(lastExcursion.getArrivalHotel());
+				
+				List<Site> l = excursion.getSiteList();
+				if(!l.isEmpty()) {
+					Site lastSite = l.get(l.size()-1);
+					Hotel lastHotel = JourneyUtility.getClosestHotel(hotels, lastSite);
+					excursion.setArrivalHotel(lastHotel);
+				} else {
+					excursion.setArrivalHotel(excursion.getDepartureHotel());
+				}
+			}
+		}
+	}
+	
 	public List<Excursion> excursionDistribution(List<Excursion> excursions) {
 		int priorityNumber = excursions.size();
-        int nbEmptyExcursions = journeyDuration - excursions.size();
-        for (int it = nbEmptyExcursions; it <= journeyDuration; it++) {
-            excursions.add(new Excursion());
-        }
+        
         if (confort < 3) {
             Collections.shuffle(excursions);
         } else {
@@ -192,27 +281,27 @@ public class Journey {
     }
 	
     public List<Day> createWeek(List<Excursion> excursions){
-
         List<Day> week = new ArrayList<Day>();
+        
         for (int index = 0 ; index < journeyDuration; index +=2) {
             Day newDay = new Day();
-            List<Excursion> exDay = new ArrayList<Excursion>();
-            exDay.add(excursions.get(index));
-            exDay.add(excursions.get(index+1));
-            newDay.setExcursionList(exDay);
-            // TODO faire la somme du prix 
-            newDay.setPrice(JourneyUtility.sumPrice(exDay));
+            newDay.setMorning(excursions.get(index));
+            newDay.setAfternoon(excursions.get(index+1));
+            newDay.updatePrice();
+            newDay.updateComfortLevel();
             week.add(newDay);
         }
-        System.out.println("nombre de jour  :  "+week.size());
         return week;
     }
+    
     public List<Day> getWeek(){
-    	return weekDay;
+    	return days;
     }
+    
     public JourneyCritere getCritere() {
     	return critere;
     }
+    
     public void setCritere(JourneyCritere critere) {
     	this.critere = critere;
 		this.budget = critere.getPrice();
@@ -220,7 +309,13 @@ public class Journey {
 		this.frequency = critere.getFrequency();
 		this.effort = critere.getEffortLevel();
     }
+    
     public int getPrice() {
-    	return excursionPrice;
+    	return journeyPrice;
     }
+    
+	public List<Excursion> getJourney() {
+		return journey;
+	}
+    
 }

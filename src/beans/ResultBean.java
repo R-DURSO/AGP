@@ -12,6 +12,7 @@ import org.primefaces.model.chart.PieChartModel;
 
 import business.core.Journey;
 import business.data.Day;
+import business.data.Excursion;
 
 
 
@@ -34,9 +35,9 @@ public class ResultBean {
 	}
 
 	@PostConstruct
-	public String  ListofSejour(Day day) {
+	public String ListofSejour(Day day) {
 		
-			return day.toString()+"\n";
+		return day.toString()+"\n";
 
 	}
 
@@ -49,16 +50,44 @@ public class ResultBean {
 	public void setSelectBean(SelectBean selectBean) {
 		this.selectBean = selectBean;
 	}
-	public String getHolliday() {
-		Journey hollidayJourney = selectBean.getJourney();
-		String allString = "";
-		List<Day>  days = hollidayJourney.getWeek();
-		for (Day day : days) {
-			allString = allString + ListofSejour(day)+"<br />";
+	
+//	public String getJourney() {
+//		Journey journey = selectBean.getJourney();
+//		String allString = "";
+//		List<Day> days = journey.getWeek();
+//		for (Day day : days) {
+//			allString = allString + ListofSejour(day)+"<br />";
+//		}
+//		return allString;
+//	}
+	
+	public String getJourney() {
+		Journey journey = selectBean.getJourney();
+		String toReturn = "";
+		List<Excursion> excursions = journey.getJourney();
+		boolean morning = true;
+		int i = 1;
+		
+		for(Excursion excursion : excursions) {
+			if(morning) {
+				toReturn += "====  Jour " + i + ":  ====<br/>";
+				toReturn += "Matin: <br/>";
+			} else {
+				toReturn += "Après-midi: <br/>";
+				i++;
+			}
+			toReturn += "-Hôtel de départ: " + excursion.getDepartureHotel().getName() + "<br/>";
+			toReturn += "-Hôtel d'arrivée: " + excursion.getArrivalHotel().getName() + "<br/>";
+			toReturn += "-Visites prévues:<br/>";
+			toReturn += excursion.getSiteName() + "<br/>";
+			
+			morning = !morning;
 		}
-		return allString;
+		
+		return toReturn;
 	}
-	public void setHolliday() {
+	
+	public void setJourney() {
 		
 	}
 	

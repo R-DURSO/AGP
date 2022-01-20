@@ -253,7 +253,7 @@ public class JdbcPersistence  {
 	 * @throws ParseException 
 	 * @throws IOException 
 	 * */
-	public Iterator<SiteScore> getTouristAttractionWithKeyWord(String keyWord1,String keyWord2) throws IOException, ParseException {
+	public Iterator<SiteScore> getTouristAttractionWithKeyWord(String keyWord1,String keyWord2) {
 		String SQLQuery = "SELECT id_site, nom_site, type_lieux, niveau_effort, "
 				+ "duree_activite, prix,"
 				+ "ST_X(position_site) as x_coordinate, ST_Y(position_site) as y_coordinate"
@@ -262,15 +262,22 @@ public class JdbcPersistence  {
 		Iterator<Site> siteIteratorSQL = allTouristAttractions(SQLQuery);
 		while(siteIteratorSQL.hasNext()) {
 			Site site = siteIteratorSQL.next();
-			Iterator<ScoreDocName> scoreIteratorTextual = luceneSearch (keyWord1,keyWord2);
+			Iterator<ScoreDocName> scoreIteratorTextual = null;
+			try {
+				scoreIteratorTextual = luceneSearch (keyWord1,keyWord2);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 			while(scoreIteratorTextual.hasNext()) {
 				ScoreDocName scoreDocName = scoreIteratorTextual.next();
 				String docName = scoreDocName.getDocName();
 				String[] words = docName.split("\\.");
 				String id_site = words[0];
-				if(site.getId_site().equals(id_site)) {
-					SiteScore siteScore = new SiteScore(site.getName(),site.getPrice(),site.getEffort()
-							,site.getType(),site.getPos()
+				if(site.getIdSite().equals(id_site)) {
+					SiteScore siteScore = new SiteScore(site.getIdSite(), site.getName(),site.getPrice(),site.getEffort()
+							,site.getType(),site.getPosition()
 							,site.getDuration(),scoreDocName.getScore());
 					siteScoreList.add(siteScore);
 				}
@@ -278,6 +285,7 @@ public class JdbcPersistence  {
 		}
 		Iterator<SiteScore> siteScoreIterator = siteScoreList.iterator();
 		siteScoreIterator = sortDescOrder(siteScoreIterator);
+		
 		return siteScoreIterator;
 		
 		
@@ -288,7 +296,7 @@ public class JdbcPersistence  {
 	 * 
 	 * @return an iterator the score and the name of the doc (in descending order)
 	 * */
-	private Iterator<ScoreDocName> luceneSearch (String keyWord1,String keyWord2) throws IOException, ParseException {
+	public Iterator<ScoreDocName> luceneSearch (String keyWord1,String keyWord2) throws IOException, ParseException {
 		int MAX_RESULTS = 100;
 		ArrayList <ScoreDocName> scoreList = new ArrayList<ScoreDocName>();
 		Iterator<ScoreDocName> scoreIterator = null;
@@ -345,7 +353,7 @@ public class JdbcPersistence  {
 	 * @return an iterator with all the TouristAttractions
 	 * */
 	private Iterator<Site> allTouristAttractions(String selectTouristAttractionsQuery) {
-		//String id_site;
+		String id_site;
 		String name;
 		int price;
 		int effort;
@@ -361,13 +369,13 @@ public class JdbcPersistence  {
 					
 			while (result.next()) {
 				Position position = new Position(result.getDouble("x_coordinate"),result.getDouble("y_coordinate"));
-				//id_site = result.getString("id_site");
+				id_site = result.getString("id_site");
 				name = result.getString("nom_site");
 				type = result.getString("type_lieux");
 				effort = result.getInt("niveau_effort");
 				duration = result.getInt("duree_activite");
 				price = result.getInt("prix");
-				Site site = new Site(name,price,effort,type,position,duration);
+				Site site = new Site(id_site, name,price,effort,type,position,duration);
 				SiteList.add(site);
 			}
 			

@@ -7,25 +7,23 @@ public class Day {
 	private int price;
 	private int comfortLevel;
 	private boolean restDay;
-	private List<Excursion> excursionList;
+	private Excursion morning;
+	private Excursion afternoon;
 
 	public Day() {
-		this.restDay=false;
-		this.excursionList=null;
+		this.restDay = false;
+		this.morning = null;
+		this.afternoon = null;
 	}
 	
-	public Day(boolean isRestDay, List<Excursion> excursionList) {
-		this.restDay=isRestDay;
-		this.excursionList=excursionList;
+	public Day(boolean isRestDay, Excursion morning, Excursion afternoon) {
+		this.restDay = isRestDay;
+		this.morning = morning;
+		this.afternoon = afternoon;
 	}
 	
 	public void updatePrice() {
-		int sum =0;
-		for (Excursion excursion : excursionList) {
-			excursion.updatePrice();
-			sum+=excursion.getPrice();
-		}
-		this.price=sum;
+		this.price = morning.getPrice() + afternoon.getPrice();
 	}
 	
 	public int getPrice() {
@@ -37,12 +35,7 @@ public class Day {
 	}
 
 	public void updateComfortLevel() {
-		int sum=0;
-		for(Excursion excursion : excursionList) {
-			excursion.updateComfortLevel();
-			sum += excursion.getComfortLevel();
-		}
-		this.comfortLevel=sum;
+		this.comfortLevel = morning.getComfortLevel() + afternoon.getComfortLevel();
 	}
 	
 	public int getComfortLevel() {
@@ -57,13 +50,6 @@ public class Day {
 		this.restDay = restDay;
 	}
 
-	public void setExcursionList(List<Excursion> excursionList) {
-		this.excursionList = excursionList;
-	}
-
-	public List<Excursion> getExcursionList() {
-		return excursionList;
-	}
 	public boolean isRestDay() {
 		return restDay;
 	}
@@ -72,25 +58,38 @@ public class Day {
 		if(restDay) {
 			return "This day is a rest day";
 		}else {
-			String messageString ="";
-						messageString = messageString  + excursionList.get(0).getDepartureHotel();
-						if(excursionList.get(0).getSiteName() == "") {
+			String messageString = "";
+						messageString = messageString  + "Hotel de départ :" + morning.getDepartureHotel().getName();
+						if(morning.getSiteName() == "") {
 							messageString= messageString  +"<br /> excursion de la matinée  : repos a la plage ";
 						}else{
-							messageString= messageString  +"<br /> excursion de la matinée  : repos a la plage "+excursionList.get(0).getSiteName();
+							messageString= messageString  +"<br /> excursion de la matinée  : "+morning.getSiteName();
 						}
-						if(excursionList.get(0).getSiteName() == "") {
+						if(morning.getSiteName() == "") {
 							messageString= messageString  +"<br /> excursion de l'après midi  : repos a la plage ";
 							
 						}else {
-							messageString= messageString  +"<br /> excursion de l'après midi  : "+excursionList.get(1).getSiteName();
+							messageString= messageString  +"<br /> excursion de l'après midi  : "+afternoon.getSiteName();
 						}
-						messageString = messageString  + excursionList.get(1).getArrivalHotel();
+						messageString = messageString  + "Hotel d'arrivée :" + afternoon.getArrivalHotel().getName();
 
-			return "This day, you will have " + this.excursionList.size() + " excursions composé de : "+messageString;
+			return "This day, you will have 2 excursions composé de : " + messageString;
 		}
 	}
-	public void add(Excursion list) {
-		excursionList.add(list);
+
+	public Excursion getMorning() {
+		return morning;
+	}
+
+	public void setMorning(Excursion morning) {
+		this.morning = morning;
+	}
+
+	public Excursion getAfternoon() {
+		return afternoon;
+	}
+
+	public void setAfternoon(Excursion afternoon) {
+		this.afternoon = afternoon;
 	}
 }

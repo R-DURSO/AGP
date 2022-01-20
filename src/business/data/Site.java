@@ -1,36 +1,43 @@
 package business.data;
 
 public class Site {
-	private String id_site;
+	private String idSite;
 	private String name;
 	private int price;
 	private int effort; // to define clearly
 	private String type; // faux si culturel vrai sinon
-	private Position pos;
-	private int duration;
-	// ajouter la localisation geo ?
-	
+	private Position position;
+	private int duration;	
 
 	public Site() {
 		this.name = null;
 	}
 	
 	public Site(String name) {
-		this.id_site = "";
+		this.idSite = "";
 		this.name = name;
 		this.price = 0;
 		this.effort = 0;
 		this.type = "";
-		this.pos = null;
+		this.position = null;
 	}
 	
-	public Site( String name, int price, int effort, String type, Position pos, int duration) {
-		//this.id_site = id_site;
+	public Site(String id_site, String name, int price, int effort, String type, Position pos, int duration) {
+		this.idSite = id_site;
 		this.name = name;
 		this.price = price;
 		this.effort = effort;
 		this.type = type;
-		this.pos = pos;
+		this.position = pos;
+		this.setDuration(duration);
+	}
+	
+	public Site(String name, int price, int effort, String type, Position pos, int duration) {
+		this.name = name;
+		this.price = price;
+		this.effort = effort;
+		this.type = type;
+		this.position = pos;
 		this.setDuration(duration);
 	}
 
@@ -42,12 +49,12 @@ public class Site {
 		this.type = type;
 	}
 
-	public Position getPos() {
-		return pos;
+	public Position getPosition() {
+		return position;
 	}
 
-	public void setPos(Position pos) {
-		this.pos = pos;
+	public void setPosition(Position pos) {
+		this.position = pos;
 	}
 
 	public String getName() {
@@ -82,12 +89,12 @@ public class Site {
 		this.duration = duration;
 	}
 
-	public String getId_site() {
-		return id_site;
+	public String getIdSite() {
+		return idSite;
 	}
 
-	public void setId_site(String id_site) {
-		this.id_site = id_site;
+	public void setIdSite(String id_site) {
+		this.idSite = id_site;
 	}
 
 }

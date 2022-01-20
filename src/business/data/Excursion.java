@@ -103,13 +103,16 @@ public class Excursion {
 	}
 	
 	public String getSiteName() {
+		if(siteList.isEmpty()) {
+			return "--Pas de visites prévues.<br/>";
+		}
 		String result = "";
 		for(Site site : siteList) {
-			result += site.getName();
-			result += " ";
+			result += "--" + site.getName() + "<br/>";
 		}
 		return result;
 	}
+	
 	public String getTraportName() {
 		String result = "";
 		for(Transport transport : transportList) {
@@ -119,12 +122,19 @@ public class Excursion {
 		return result;
 	}
 	
+//	@Override
+//	public String toString() {
+//		this.updateComfortLevel();
+//		this.updatePrice();
+//		return "Excursion [price=" + price + ", comfortLevel=" + comfortLevel + ", sites visités: " + this.getSiteName()
+//				+ ", departureHotel=" + departureHotel.getName() + ",arrivalHotel=" + arrivalHotel.getName() + ", transportList=" + this.getTraportName() + "]";
+//	}
+	
 	@Override
 	public String toString() {
-		this.updateComfortLevel();
-		this.updatePrice();
-		return "Excursion [price=" + price + ", comfortLevel=" + comfortLevel + ", sites visités: " + this.getSiteName()
-				+ ", departureHotel=" + departureHotel.getName() + ",arrivalHotel=" + arrivalHotel.getName() + ", transportList=" + this.getTraportName() + "]";
+//		this.updateComfortLevel();
+//		this.updatePrice();
+		return "Excursion [ sites visités: " + this.getSiteName() + "]";
 	}
 	
 	
