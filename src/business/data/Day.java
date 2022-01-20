@@ -10,7 +10,7 @@ public class Day {
 	private List<Excursion> excursionList;
 
 	public Day() {
-		this.restDay=true;
+		this.restDay=false;
 		this.excursionList=null;
 	}
 	
@@ -72,7 +72,21 @@ public class Day {
 		if(restDay) {
 			return "This day is a rest day";
 		}else {
-			return "This day, you will have " + this.excursionList.size() + " excursions";
+			String messageString ="";
+			
+						if(excursionList.get(0).getSiteName() == "") {
+							messageString= messageString  +"\n excursion de la matinée  : repos a la plage ";
+						}else{
+							messageString= messageString  +"\n excursion de la matinée  : repos a la plage "+excursionList.get(0).getSiteName();
+						}
+						if(excursionList.get(0).getSiteName() == "") {
+							messageString= messageString  +"\n excursion de l'après midi  : repos a la plage ";
+							
+						}else {
+							messageString= messageString  +"\n excursion de l'après midi  : "+excursionList.get(1).getSiteName();
+						}
+
+			return "This day, you will have " + this.excursionList.size() + " excursions composé de : "+messageString;
 		}
 	}
 	public void add(Excursion list) {
