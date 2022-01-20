@@ -1,5 +1,6 @@
 package business.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.primefaces.expression.impl.ThisExpressionResolver;
@@ -10,10 +11,10 @@ public class Excursion {
 	private int comfortLevel;
 	
 	
-	private List<Site> siteList;
+	private List<Site> siteList = new ArrayList<Site>();
 	private Hotel departureHotel;
 	private Hotel arrivalHotel;
-	private List<Transport> transportList; //may be use a hashmap to have a specific transport for every site
+	private List<Transport> transportList = new ArrayList<Transport>(); //may be use a hashmap to have a specific transport for every site
 	
 	public Excursion() {
 		

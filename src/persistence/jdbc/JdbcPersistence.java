@@ -275,7 +275,7 @@ public class JdbcPersistence  {
 	 * 
 	 * @return an iterator with all the TouristAttractions
 	 * */
-	private Iterator<Site> allTouristAttractions() {
+	public Iterator<Site> allTouristAttractions() {
 		String id_site;
 		String name;
 		int price;
@@ -324,7 +324,7 @@ public class JdbcPersistence  {
 	 * 
 	 * @return a iterator with all the tourist attractions id
 	 * */
-	private Iterator <String> getAllTouristAttractionsId() {
+	public Iterator <String> getAllTouristAttractionsId() {
 		ArrayList <String> idList = new ArrayList<String>();
 		try {
 			

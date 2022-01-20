@@ -6,7 +6,7 @@ package business.data;
 /*
  * modifier les constante qui seront utiliser 
  */
-public class SejourCritere {
+public class JourneyCritere {
 
     private int confortChoice;
     private int price;
@@ -24,13 +24,17 @@ public class SejourCritere {
 		this.confortChoice = confortChoice;
 	}
 
-	public SejourCritere() {
+	public JourneyCritere() {
     }
 
-    public SejourCritere(int confortChoice, int price,
+    public JourneyCritere(int confortChoice, int price,
             int duration, String keyWord, int frequency,
             int effortLevel) {
-
+    	this.confortChoice = confortChoice;
+    	this.duration = duration;
+    	this.effortLevel = effortLevel;
+    	this.keyWord = keyWord;
+    	this.frequency = frequency;
     }
 
 	public int getPrice() {

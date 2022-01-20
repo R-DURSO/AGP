@@ -16,8 +16,8 @@ CREATE TABLE ligne_transport (
 
 CREATE TABLE station (
     id_station varchar(50) NOT NULL,
-    position POINT NOT NULL,
     nom_station varchar(50),
+    position POINT NOT NULL,
     id_ligne varchar(50),
     PRIMARY KEY (id_station),
     FOREIGN KEY (id_ligne) REFERENCES ligne_transport(id_ligne)
@@ -31,9 +31,7 @@ CREATE TABLE site_touristique (
     duree_activite smallint,
     prix smallint,
     position_site POINT NOT NULL,
-    id_station varchar(50),
-    PRIMARY KEY (id_site),
-    FOREIGN KEY (id_station) REFERENCES station(id_station)
+    PRIMARY KEY (id_site)
 );
 
 CREATE TABLE hotel (
@@ -42,9 +40,7 @@ CREATE TABLE hotel (
     position POINT NOT NULL,
     prix smallint,
     confort smallint,
-    id_station varchar(50),
-    PRIMARY KEY (id_hotel),
-    FOREIGN KEY (id_station) REFERENCES station(id_station)
+    PRIMARY KEY (id_hotel)
 );
 
 

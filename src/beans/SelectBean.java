@@ -7,7 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import business.data.SejourCritere;
+import business.data.JourneyCritere;
 
 /**
  * Simulation bean controller used to collect simulation entry parameters and to start the simulation.
@@ -21,7 +21,7 @@ public class SelectBean {
 	/**
 	 * Proxy encapsulated object. All get/set of parameters work on this proxy object.
 	 */
-	private SejourCritere entry = new SejourCritere();
+	private JourneyCritere entry = new JourneyCritere();
     //private String[] selectedOptions;
     private List<Integer> scale;
 
@@ -42,11 +42,11 @@ public class SelectBean {
 	}
 
 
-	public SejourCritere getEntry() {
+	public JourneyCritere getEntry() {
 		return entry;
 	}
 
-	public void setEntry(SejourCritere entry) {
+	public void setEntry(JourneyCritere entry) {
 		this.entry = entry;
 	}
 
