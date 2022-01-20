@@ -17,7 +17,7 @@ public class testQuery {
 		JdbcPersistence persistence = new JdbcPersistence();
 		float goodHotelPrice = persistence.luxuriousHotelMean();
 		System.out.println("prix moyen hotel de luxe : "+goodHotelPrice);
-		Iterator<Hotel> hotelIterator = persistence.getAllHotel(2);
+		Iterator<Hotel> hotelIterator = persistence.getAllHotel(7);
 		while(hotelIterator.hasNext()) {
 			Hotel hotel = hotelIterator.next();
 			System.out.println("Nom de l'hotel "+hotel.getName()+" "
