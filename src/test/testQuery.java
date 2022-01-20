@@ -25,7 +25,11 @@ public class testQuery {
 					+" position y : "+hotel.getPosition().getY());
 		}
 		/*
-		Iterator<Site> siteIterator = persistence.allTouristAttractions();
+		String selectTouristAttractionsQuery = "SELECT id_site, nom_site, type_lieux, niveau_effort, "
+				+ "duree_activite, prix,"
+				+ "ST_X(position_site) as x_coordinate, ST_Y(position_site) as y_coordinate"
+				+ " FROM site_touristique";
+		Iterator<Site> siteIterator = persistence.allTouristAttractions(selectTouristAttractionsQuery);
 		while(siteIterator.hasNext()) {
 			Site site = siteIterator.next();
 			System.out.println("\nid du site : "+site.getId_site()+ " Nom du site "+site.getName()+" "
@@ -40,5 +44,6 @@ public class testQuery {
 					+" position x :"+namePosStation.getPosition().getX()
 					+" position y : "+namePosStation.getPosition().getY());
 		}
+		
 	}
 }

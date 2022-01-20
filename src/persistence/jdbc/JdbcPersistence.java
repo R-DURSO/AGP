@@ -94,10 +94,8 @@ public class JdbcPersistence  {
 	
 			
 			while (result.next()) {
-				Position position = new Position(0,0);
+				Position position = new Position(result.getFloat("x_coordinate"),result.getFloat("y_coordinate"));
 				name = result.getString("nom_hotel");
-				position.setX(result.getFloat("x_coordinate"));
-				position.setY(result.getFloat("y_coordinate"));
 				comfortLevel = result.getInt("confort");
 				priceLevel = result.getInt("prix");
 				if(priceLevel<100) {
@@ -198,7 +196,43 @@ public class JdbcPersistence  {
 		return meanHotelPrice;
 	}
 	
-	
+	/**
+	 * 
+	 * Get all Tourist Attractions who their description match the two keyword
+	 * 
+	 * @return an iterator with all the Tourist Attractions who their description match the two keyword
+	 * @throws ParseException 
+	 * @throws IOException 
+	 * */
+	public Iterator<SiteScore> getTouristAttractionWithKeyWord(String keyWord1,String keyWord2) throws IOException, ParseException {
+		String SQLQuery = "SELECT id_site, nom_site, type_lieux, niveau_effort, "
+				+ "duree_activite, prix,"
+				+ "ST_X(position_site) as x_coordinate, ST_Y(position_site) as y_coordinate"
+				+ " FROM site_touristique ";
+		ArrayList <SiteScore> siteScoreList =  new ArrayList<SiteScore>();
+		Iterator<Site> siteIteratorSQL = allTouristAttractions(SQLQuery);
+		Iterator<ScoreDocName> scoreIteratorTextual = luceneSearch (keyWord1,keyWord2);
+		while(siteIteratorSQL.hasNext()) {
+			Site site = siteIteratorSQL.next();
+			while(scoreIteratorTextual.hasNext()) {
+				ScoreDocName scoreDocName = scoreIteratorTextual.next();
+				String docName = scoreDocName.getDocName();
+				String[] words = docName.split(".");
+				String id_site = words[0];
+				if(site.getId_site() == id_site) {
+					//on range dans iterator final
+					SiteScore siteScore = new SiteScore(site.getName(),site.getPrice(),site.getEffort()
+							,site.getType(),site.getPos()
+							,site.getDuration(),scoreDocName.getScore());
+					siteScoreList.add(siteScore);
+				}
+			}
+		}
+		Iterator<SiteScore> siteScoreIterator = siteScoreList.iterator();
+		return siteScoreIterator;
+		
+		
+	}
 	/**
 	 * 
 	 * Get all Tourist Attractions
@@ -210,8 +244,7 @@ public class JdbcPersistence  {
 		ArrayList <ScoreDocName> scoreList = new ArrayList<ScoreDocName>();
 		Iterator<ScoreDocName> scoreIterator = null;
 		Iterator <String> iteratorIdList = getAllTouristAttractionsId();
-	    // 1. Specifier l'analyseur pour le texte.
-	    //    Le même analyseur est utilisé pour l'indexation et la recherche
+
 	    Analyzer analyseur = new StandardAnalyzer();
 
 	    // 2. Creation de l'index
@@ -275,7 +308,7 @@ public class JdbcPersistence  {
 	 * 
 	 * @return an iterator with all the TouristAttractions
 	 * */
-	private Iterator<Site> allTouristAttractions() {
+	private Iterator<Site> allTouristAttractions(String selectTouristAttractionsQuery) {
 		String id_site;
 		String name;
 		int price;
@@ -286,21 +319,14 @@ public class JdbcPersistence  {
 		Iterator<Site> SiteIterator = null;
 		try {
 			
-			String selectTouristAttractionsQuery = "SELECT id_site, nom_site, type_lieux, niveau_effort, "
-					+ "duree_activite, prix,"
-					+ "ST_X(position_site) as x_coordinate, ST_Y(position_site) as y_coordinate"
-					+ " FROM site_touristique";
-			
 			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectTouristAttractionsQuery);
 			
 			ResultSet result = preparedStatement.executeQuery();
 					
 			while (result.next()) {
-				Position position = new Position(0,0);
+				Position position = new Position(result.getDouble("x_coordinate"),result.getDouble("y_coordinate"));
 				id_site = result.getString("id_site");
 				name = result.getString("nom_site");
-				position.setX(result.getDouble("x_coordinate"));
-				position.setY(result.getDouble("y_coordinate"));
 				type = result.getString("type_lieux");
 				effort = result.getInt("niveau_effort");
 				duration = result.getInt("duree_activite");
@@ -318,6 +344,53 @@ public class JdbcPersistence  {
 		SiteIterator = SiteList.iterator();
 		return SiteIterator;
 	}
+	
+	/**
+	 * Public version without param
+	 * Get all Tourist Attractions
+	 * 
+	 * @return an iterator with all the TouristAttractions
+	 * */
+	public Iterator<Site> allTouristAttractions() {
+		String id_site;
+		String name;
+		int price;
+		int effort;
+		String type;
+		int duration;
+		ArrayList <Site> SiteList =  new ArrayList<Site>();
+		Iterator<Site> SiteIterator = null;
+		try {
+			String selectTouristAttractionsQuery = "SELECT id_site, nom_site, type_lieux, niveau_effort, "
+					+ "duree_activite, prix,"
+					+ "ST_X(position_site) as x_coordinate, ST_Y(position_site) as y_coordinate"
+					+ " FROM site_touristique ";
+			PreparedStatement preparedStatement = JdbcConnection.getConnection().prepareStatement(selectTouristAttractionsQuery);
+			
+			ResultSet result = preparedStatement.executeQuery();
+					
+			while (result.next()) {
+				Position position = new Position(result.getDouble("x_coordinate"),result.getDouble("y_coordinate"));
+				id_site = result.getString("id_site");
+				name = result.getString("nom_site");
+				type = result.getString("type_lieux");
+				effort = result.getInt("niveau_effort");
+				duration = result.getInt("duree_activite");
+				price = result.getInt("prix");
+				Site site = new Site(id_site,name,price,effort,type,position,duration);
+				SiteList.add(site);
+			}
+			
+			preparedStatement.close();
+			
+			
+		} catch (SQLException se) {
+			System.err.println(se.getMessage());
+		}
+		SiteIterator = SiteList.iterator();
+		return SiteIterator;
+	}
+
 	/**
 	 * 
 	 * Get all Tourist Attractions name
