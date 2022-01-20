@@ -14,7 +14,8 @@ import business.data.JourneyCritere;
 public class TestAlgo {
 	public static void main(String[] args) throws IOException, ParseException, SQLException{
 		JourneyCritere crit = new JourneyCritere(1, 3000, 7, "test", 5, 5);
-		Journey expJourney = new Journey(crit);
+		Journey expJourney = new Journey();
+		expJourney.setCritere(crit);
 		//System.out.println(expJourney.getCritere().getEffortLevel());
 		expJourney.createJourney();
 		List<Day>  days = expJourney.getWeek();

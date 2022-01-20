@@ -1,10 +1,12 @@
 package business.core;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.aspectj.weaver.patterns.IScope;
 import org.primefaces.expression.impl.ThisExpressionResolver;
 
@@ -15,6 +17,7 @@ import business.data.JourneyCritere;
 import business.data.Site;
 import business.data.Transport;
 import persistence.jdbc.JdbcPersistence;
+import persistence.jdbc.SiteScore;
 
 public class Journey {
 
@@ -36,7 +39,7 @@ public class Journey {
 	private Iterator<Transport> transportIterator ;
 	private Iterator<Site> siteIterator = persistence.allTouristAttractions();
 	
-	private Iterator<Site> otherSiteIterator = null;
+	private Iterator<SiteScore> otherSiteIterator = null;
 	
 	// Contains hotels corresponding to the user's preferences
 	private List<Hotel> hotelList = new ArrayList<>();
@@ -54,17 +57,31 @@ public class Journey {
 		this.frequency = critere.getFrequency();
 		this.effort = critere.getEffortLevel();
 	}
+	public Journey() {
+		
+	}
 
 	public void createJourney() {
 		hotelIterator = persistence.getAllHotel(confort);
 		hotelIterator.forEachRemaining(hotelList::add);
 		siteIterator.forEachRemaining(siteList::add);	
+		/**String[] keyWord = critere.getKeyWord().split("\\s");
+		try {
+			otherSiteIterator = persistence.getTouristAttractionWithKeyWord(keyWord[0], keyWord[1]);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// TODO  a relier dès que la requête et faites 
 		// Creation of otherSiteList from the iterator
-	/***	while(otherSiteIterator.hasNext()) {
-			Site site = otherSiteIterator.next();
-			if(!siteList.contains(site)) {
-				otherSiteList.add(site);
+		while(otherSiteIterator.hasNext()) {
+			SiteScore site = otherSiteIterator.next();
+			Site prioritySite = new Site(site.getName(),site.getPrice(),site.getEffort(),site.getType(),site.getPos(), site.getDuration());
+			if(!siteList.contains(prioritySite)) {
+				otherSiteList.add(prioritySite);
 			}
 		}**/
 		// on réparti les excursion de facon aléatoire 
@@ -198,5 +215,12 @@ public class Journey {
     }
     public void setCritere(JourneyCritere critere) {
     	this.critere = critere;
+		this.budget = critere.getPrice();
+		this.confort = critere.getConfortChoice();
+		this.frequency = critere.getFrequency();
+		this.effort = critere.getEffortLevel();
+    }
+    public int getPrice() {
+    	return excursionPrice;
     }
 }

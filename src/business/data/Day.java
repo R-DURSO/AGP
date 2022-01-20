@@ -73,18 +73,19 @@ public class Day {
 			return "This day is a rest day";
 		}else {
 			String messageString ="";
-			
+						messageString = messageString  + excursionList.get(0).getDepartureHotel();
 						if(excursionList.get(0).getSiteName() == "") {
-							messageString= messageString  +"\n excursion de la matinée  : repos a la plage ";
+							messageString= messageString  +"<br /> excursion de la matinée  : repos a la plage ";
 						}else{
-							messageString= messageString  +"\n excursion de la matinée  : repos a la plage "+excursionList.get(0).getSiteName();
+							messageString= messageString  +"<br /> excursion de la matinée  : repos a la plage "+excursionList.get(0).getSiteName();
 						}
 						if(excursionList.get(0).getSiteName() == "") {
-							messageString= messageString  +"\n excursion de l'après midi  : repos a la plage ";
+							messageString= messageString  +"<br /> excursion de l'après midi  : repos a la plage ";
 							
 						}else {
-							messageString= messageString  +"\n excursion de l'après midi  : "+excursionList.get(1).getSiteName();
+							messageString= messageString  +"<br /> excursion de l'après midi  : "+excursionList.get(1).getSiteName();
 						}
+						messageString = messageString  + excursionList.get(1).getArrivalHotel();
 
 			return "This day, you will have " + this.excursionList.size() + " excursions composé de : "+messageString;
 		}

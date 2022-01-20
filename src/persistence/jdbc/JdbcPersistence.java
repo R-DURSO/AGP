@@ -345,7 +345,7 @@ public class JdbcPersistence  {
 	 * @return an iterator with all the TouristAttractions
 	 * */
 	private Iterator<Site> allTouristAttractions(String selectTouristAttractionsQuery) {
-		String id_site;
+		//String id_site;
 		String name;
 		int price;
 		int effort;
@@ -361,13 +361,13 @@ public class JdbcPersistence  {
 					
 			while (result.next()) {
 				Position position = new Position(result.getDouble("x_coordinate"),result.getDouble("y_coordinate"));
-				id_site = result.getString("id_site");
+				//id_site = result.getString("id_site");
 				name = result.getString("nom_site");
 				type = result.getString("type_lieux");
 				effort = result.getInt("niveau_effort");
 				duration = result.getInt("duree_activite");
 				price = result.getInt("prix");
-				Site site = new Site(id_site,name,price,effort,type,position,duration);
+				Site site = new Site(name,price,effort,type,position,duration);
 				SiteList.add(site);
 			}
 			
@@ -388,7 +388,7 @@ public class JdbcPersistence  {
 	 * @return an iterator with all the TouristAttractions
 	 * */
 	public Iterator<Site> allTouristAttractions() {
-		String id_site;
+		//String id_site;
 		String name;
 		int price;
 		int effort;
@@ -407,13 +407,13 @@ public class JdbcPersistence  {
 					
 			while (result.next()) {
 				Position position = new Position(result.getDouble("x_coordinate"),result.getDouble("y_coordinate"));
-				id_site = result.getString("id_site");
+				//id_site = result.getString("id_site");
 				name = result.getString("nom_site");
 				type = result.getString("type_lieux");
 				effort = result.getInt("niveau_effort");
 				duration = result.getInt("duree_activite");
 				price = result.getInt("prix");
-				Site site = new Site(id_site,name,price,effort,type,position,duration);
+				Site site = new Site(name,price,effort,type,position,duration);
 				SiteList.add(site);
 			}
 			

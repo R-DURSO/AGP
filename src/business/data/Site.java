@@ -24,8 +24,8 @@ public class Site {
 		this.pos = null;
 	}
 	
-	public Site(String id_site, String name, int price, int effort, String type, Position pos, int duration) {
-		this.id_site = id_site;
+	public Site( String name, int price, int effort, String type, Position pos, int duration) {
+		//this.id_site = id_site;
 		this.name = name;
 		this.price = price;
 		this.effort = effort;
