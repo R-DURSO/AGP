@@ -178,11 +178,10 @@ public class Journey {
 
         List<Day> week = new ArrayList<Day>();
         for (int index = 0 ; index < journeyDuration; index +=2) {
-        	System.out.println("appel de la fonction jour : "+index/2);
             Day newDay = new Day();
             List<Excursion> exDay = new ArrayList<Excursion>();
             exDay.add(excursions.get(index));
-           // exDay.add(excursions.get(index+1));
+            exDay.add(excursions.get(index+1));
             newDay.setExcursionList(exDay);
             // TODO faire la somme du prix 
             newDay.setPrice(JourneyUtility.sumPrice(exDay));
