@@ -4,7 +4,11 @@ import java.util.Comparator;
 
 import business.data.Position;
 import business.data.Site;
-
+/**
+ * 
+ * This class will be use for store the site  and the score create with lucene 
+ *
+ */
 public class SiteScore extends Site{
 	private float score;
 	public SiteScore(String idSite, String name, int price, int effort, String type, Position pos, int duration, float score) {

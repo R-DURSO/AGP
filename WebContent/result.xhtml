@@ -6,22 +6,21 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>Voyage trouvée </title>
+	<title>Voyage trouvée</title>
 </h:head>
 <h:body>
 	<fieldset>
-		<legend>
-			<strong> Voici votre futur voyage a la Réunion</strong>
-		</legend>		
-	
-		<h:outputText value="#{resultBean.journey}" escape="false"/><br />
-		<h2> Voici votre seconde option  </h2>
-		<h:outputText value="#{resultBean.newJourney}" escape="false"/><br />
+
+		<h1>Voici votre futur voyage a la Réunion</h1>
+
+
+		<h:outputText value="#{resultBean.journey}" escape="false" />
+		<br />
+		<h2>Voici votre seconde option</h2>
+		<h:outputText value="#{resultBean.newJourney}" escape="false" />
+		<br />
 
 	</fieldset>
-	<fieldset>
-
-
-	</fieldset>
+	<fieldset></fieldset>
 </h:body>
 </html>
