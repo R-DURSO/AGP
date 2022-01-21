@@ -1,4 +1,4 @@
-package persistence.jdbc;
+package business.data;
 
 /**
  * 

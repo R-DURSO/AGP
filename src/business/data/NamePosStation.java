@@ -1,6 +1,5 @@
-package persistence.jdbc;
+package business.data;
 
-import business.data.Position;
 /**
  * Class use for store de position of all station contain in DB
  */

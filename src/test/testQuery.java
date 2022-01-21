@@ -5,8 +5,8 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Iterator;
 
+import business.data.SiteScore;
 import persistence.jdbc.JdbcPersistence;
-import persistence.jdbc.SiteScore;
 
 /**
  * Tests queries from the db

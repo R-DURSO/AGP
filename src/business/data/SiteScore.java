@@ -1,9 +1,6 @@
-package persistence.jdbc;
+package business.data;
 
 import java.util.Comparator;
-
-import business.data.Position;
-import business.data.Site;
 /**
  * 
  * This class will be use for store the site  and the score create with lucene 

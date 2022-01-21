@@ -28,8 +28,11 @@ import business.data.CheapHotel;
 import business.data.Hotel;
 import business.data.LuxuryHotel;
 import business.data.MediumHotel;
+import business.data.NamePosStation;
 import business.data.Position;
+import business.data.ScoreDocName;
 import business.data.Site;
+import business.data.SiteScore;
 import business.data.Transport;
 
 public class JdbcPersistence {

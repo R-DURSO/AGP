@@ -9,8 +9,8 @@ import business.data.Excursion;
 import business.data.Hotel;
 import business.data.JourneyCritere;
 import business.data.Site;
+import business.data.SiteScore;
 import persistence.jdbc.JdbcPersistence;
-import persistence.jdbc.SiteScore;
 
 /**
  * Journey manages the creation of the whole journey which consists of multiple excursions.

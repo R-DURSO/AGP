@@ -5,8 +5,8 @@ import java.util.Iterator;
 
 import org.apache.lucene.queryparser.classic.ParseException;
 
+import business.data.ScoreDocName;
 import persistence.jdbc.JdbcPersistence;
-import persistence.jdbc.ScoreDocName;
 
 /**
  * Tests lucene search with keywords
