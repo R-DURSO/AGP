@@ -2,7 +2,11 @@ package persistence.jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-
+/**
+ * this class will be use for the connection with BD the script for create it are placed on the other folder
+ * 
+ *
+ */
 class JdbcConnection {
 	private static String host = "localhost";
 	private static String base = "agp";
