@@ -6,6 +6,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+
 import java.io.*;
 import java.nio.file.*;
 
@@ -297,6 +301,9 @@ public class JdbcPersistence  {
 	 * @return an iterator the score and the name of the doc (in descending order)
 	 * */
 	public Iterator<ScoreDocName> luceneSearch (String keyWord1,String keyWord2) throws IOException, ParseException {
+		ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
+		String resourcesPath = ext.getRealPath("/WEB-INF/resources");
+		
 		int MAX_RESULTS = 100;
 		ArrayList <ScoreDocName> scoreList = new ArrayList<ScoreDocName>();
 		Iterator<ScoreDocName> scoreIterator = null;
@@ -304,14 +311,14 @@ public class JdbcPersistence  {
 
 	    Analyzer analyseur = new StandardAnalyzer();
 
-	    Path indexpath = FileSystems.getDefault().getPath("src\\persistence\\jdbc\\site\\index");
+	    Path indexpath = FileSystems.getDefault().getPath(resourcesPath + "\\index");
 	    Directory index = FSDirectory.open(indexpath);
 	    IndexWriterConfig config = new IndexWriterConfig(analyseur);
 	    IndexWriter w = new IndexWriter(index, config);
 	    
 	    while(iteratorIdList.hasNext()) {
 	    	String fileName = iteratorIdList.next()+".txt";
-		    File f = new File("src\\persistence\\jdbc\\site\\"+fileName);
+		    File f = new File(resourcesPath + "\\" + fileName);
 	   		Document doc = new Document();
 	   		doc.add(new Field("nom", f.getName(), TextField.TYPE_STORED));
 	   		doc.add(new Field("contenu", new FileReader(f), TextField.TYPE_NOT_STORED));
