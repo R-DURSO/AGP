@@ -13,6 +13,7 @@ import persistence.jdbc.JdbcPersistence;
 import persistence.jdbc.NamePosStation;
 import persistence.jdbc.SiteScore;
 
+/** Tests queries from the db
 public class testQuery {
 	public static void main(String[] args) throws IOException, ParseException, SQLException{
 		JdbcPersistence persistence = new JdbcPersistence();

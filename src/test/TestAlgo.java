@@ -10,7 +10,9 @@ import business.core.Journey;
 import business.data.Excursion;
 import business.data.JourneyCritere;
 
-
+/**
+ * Test the algorith that builds a journey with hard coded criteria
+ */
 public class TestAlgo {
 	public static void main(String[] args) throws IOException, ParseException, SQLException{
 		int confort = 1;

@@ -8,6 +8,9 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import persistence.jdbc.JdbcPersistence;
 import persistence.jdbc.ScoreDocName;
 
+/**
+ * Tests lucene search with keywords
+ */
 public class testLucene {
 	public static void main(String[] args) throws IOException, ParseException {
 		JdbcPersistence persistence = new JdbcPersistence();
