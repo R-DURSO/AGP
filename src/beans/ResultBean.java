@@ -8,7 +8,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
 import business.core.Journey;
-import business.data.Day;
+
 import business.data.Excursion;
 
 /**
@@ -28,11 +28,7 @@ public class ResultBean {
 	}
 
 	@PostConstruct
-	public String ListofSejour(Day day) {
 
-		return day.toString() + "\n";
-
-	}
 
 	public SelectBean getSelectBean() {
 		return selectBean;
