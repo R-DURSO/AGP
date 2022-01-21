@@ -1,19 +1,16 @@
 package test;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Iterator;
 
-import org.apache.lucene.queryparser.classic.ParseException;
-
-import business.data.Hotel;
-import business.data.Site;
 import persistence.jdbc.JdbcPersistence;
-import persistence.jdbc.NamePosStation;
 import persistence.jdbc.SiteScore;
 
-/** Tests queries from the db
+/**
+ * Tests queries from the db
+ */
 public class testQuery {
 	public static void main(String[] args) throws IOException, ParseException, SQLException{
 		JdbcPersistence persistence = new JdbcPersistence();
