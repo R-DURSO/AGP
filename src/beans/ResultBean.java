@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
 import org.aspectj.apache.bcel.generic.RETURN;
+import org.hibernate.mapping.Set;
 import org.primefaces.model.chart.PieChartModel;
 
 import business.core.Journey;
@@ -90,6 +91,34 @@ public class ResultBean {
 	public void setJourney() {
 		
 	}
-	
+	public String getNewJourney() {
+		Journey journey = selectBean.getJourney();
+		journey.createJourney();
+		String toReturn = "";
+		List<Excursion> excursions = journey.getJourney();
+		boolean morning = true;
+		int i = 1;
+		
+		for(Excursion excursion : excursions) {
+			if(morning) {
+				toReturn += "====  Jour " + i + ":  ====<br/>";
+				toReturn += "Matin: <br/>";
+			} else {
+				toReturn += "Après-midi: <br/>";
+				i++;
+			}
+			toReturn += "-Hôtel de départ: " + excursion.getDepartureHotel().getName() + "<br/>";
+			toReturn += "-Hôtel d'arrivée: " + excursion.getArrivalHotel().getName() + "<br/>";
+			toReturn += "-Visites prévues:<br/>";
+			toReturn += excursion.getSiteName() + "<br/>";
+			
+			morning = !morning;
+		}
+		
+		return toReturn;
+	}
+	public void setNewJourney() {
+		
+	}
 
 }

@@ -67,8 +67,7 @@ public class Journey {
 		this.confort = critere.getConfortChoice();
 		this.frequency = critere.getFrequency();
 		this.effort = critere.getEffortLevel();
-		//this.keyWord = critere.getKeyWord();
-		this.keyWord = "Cascades rivière";
+		this.keyWord = critere.getKeyWord();
 		System.out.println("************ Critere ************");
 		System.out.println(critere.getPrice());
 		System.out.println(critere.getConfortChoice());
