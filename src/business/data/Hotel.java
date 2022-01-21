@@ -1,5 +1,8 @@
 package business.data;
 
+/**
+ * Data class hotel
+ */
 public abstract class Hotel {
 	
 	private int comfortLevel;

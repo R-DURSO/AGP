@@ -1,5 +1,8 @@
 package business.data;
 
+/**
+ * Data class position
+ */
 public class Position {
 	private double x;
 	private double y;

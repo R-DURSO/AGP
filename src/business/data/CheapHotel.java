@@ -1,5 +1,8 @@
 package business.data;
 
+/**
+ * Data class for a type of hotel
+ */
 public class CheapHotel extends Hotel{
 
 	public CheapHotel(Position pos, String name) {

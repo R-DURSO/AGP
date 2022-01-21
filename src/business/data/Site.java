@@ -1,5 +1,9 @@
 package business.data;
 
+/**
+ * A site is place you can visit durong an excursion. It can be an activity, a museum, etc...
+ * It can have price or be free.
+ */
 public class Site {
 	private String idSite;
 	private String name;

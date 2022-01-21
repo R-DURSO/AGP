@@ -1,10 +1,7 @@
 package business.data;
 
 /**
- * This class encapsulates simulation entry parameters.
- */
-/*
- * modifier les constante qui seront utiliser 
+ * Criteria filled by the user (from the web page) used to personalize the user's journey
  */
 public class JourneyCritere {
 

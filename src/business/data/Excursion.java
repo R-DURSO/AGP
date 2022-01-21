@@ -3,8 +3,13 @@ package business.data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An excursion is a hald-day composed of a list of sites to visit (can be empty for when the user doesn't want to visit anything)
+ * With a hotel from which you start the excursion and a hotel to wich the excursion ends
+ * A list of transports used during the excursion
+ */
 public class Excursion {
-	private int price;  //might be modified, need to talk about it
+	private int price;
 	private int comfortLevel;
 	
 	

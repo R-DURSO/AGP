@@ -1,5 +1,8 @@
 package business.data;
 
+/**
+ * Data class transport
+ */
 public abstract class Transport {
 	
 	private int price;
