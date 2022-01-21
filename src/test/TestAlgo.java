@@ -12,6 +12,7 @@ import business.data.JourneyCritere;
 
 /**
  * Test the algorith that builds a journey with hard coded criteria
+ * Doesn't work since the description files are now in the server's folder
  */
 public class TestAlgo {
 	public static void main(String[] args) throws IOException, ParseException, SQLException{
