@@ -34,6 +34,4 @@ public abstract class Transport {
 		this.comfortLevel = comfortLevel;
 	}
 	
-	
-	
 }

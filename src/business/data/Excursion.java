@@ -3,10 +3,7 @@ package business.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.primefaces.expression.impl.ThisExpressionResolver;
-
 public class Excursion {
-	//TODO:see that with team
 	private int price;  //might be modified, need to talk about it
 	private int comfortLevel;
 	
@@ -20,8 +17,7 @@ public class Excursion {
 		
 	}
 	
-	public Excursion(int price, int comfortLevel, List<Site> siteList, Hotel departureHotel, Hotel arrivalHotel,
-			List<Transport> transportList) {
+	public Excursion(int price, int comfortLevel, List<Site> siteList, Hotel departureHotel, Hotel arrivalHotel, List<Transport> transportList) {
 		super();
 		this.price = price;
 		this.comfortLevel = comfortLevel;
@@ -113,7 +109,7 @@ public class Excursion {
 		return result;
 	}
 	
-	public String getTraportName() {
+	public String getTransportName() {
 		String result = "";
 		for(Transport transport : transportList) {
 			result += transport.getComfortLevel();
@@ -122,18 +118,8 @@ public class Excursion {
 		return result;
 	}
 	
-//	@Override
-//	public String toString() {
-//		this.updateComfortLevel();
-//		this.updatePrice();
-//		return "Excursion [price=" + price + ", comfortLevel=" + comfortLevel + ", sites visités: " + this.getSiteName()
-//				+ ", departureHotel=" + departureHotel.getName() + ",arrivalHotel=" + arrivalHotel.getName() + ", transportList=" + this.getTraportName() + "]";
-//	}
-	
 	@Override
 	public String toString() {
-//		this.updateComfortLevel();
-//		this.updatePrice();
 		return "Excursion [ sites visités: " + this.getSiteName() + "]";
 	}
 	

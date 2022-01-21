@@ -4,8 +4,8 @@ public class Site {
 	private String idSite;
 	private String name;
 	private int price;
-	private int effort; // to define clearly
-	private String type; // faux si culturel vrai sinon
+	private int effort;
+	private String type;
 	private Position position;
 	private int duration;	
 

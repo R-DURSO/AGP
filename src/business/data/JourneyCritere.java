@@ -18,9 +18,7 @@ public class JourneyCritere {
 	public JourneyCritere() {
     }
 
-    public JourneyCritere(int confortChoice, int price,
-            int duration, String keyWord, int frequency,
-            int effortLevel) {
+    public JourneyCritere(int confortChoice, int price, int duration, String keyWord, int frequency, int effortLevel) {
     	this.confortChoice = confortChoice;
     	this.price = price;
     	this.duration = duration;
